@@ -13,6 +13,7 @@ exports.up = function(knex, Promise) {
       tbl.string('last_name')
       tbl.integer('experience')
       tbl.integer('level')
+      tbl.integer('num_of_plants')
   })
 };
 

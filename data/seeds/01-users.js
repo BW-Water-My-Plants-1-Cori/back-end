@@ -15,6 +15,7 @@ exports.seed = function (knex) {
           last_name: "Bobbson",
           experience: 5,
           level: 1,
+          num_of_plants: 1
         },
         {
           id: 2,
@@ -26,6 +27,7 @@ exports.seed = function (knex) {
           last_name: "Frank",
           experience: 95,
           level: 2,
+          num_of_plants: 1
         },
         {
           id: 3,
@@ -37,6 +39,7 @@ exports.seed = function (knex) {
           last_name: "James",
           experience: 100,
           level: 77,
+          num_of_plants: 1
         },
       ]);
     });
