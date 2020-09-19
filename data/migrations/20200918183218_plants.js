@@ -6,6 +6,7 @@ exports.up = function (knex, Promise) {
     tbl.string("date_last_watered").notNullable();
     tbl.integer("increment").notNullable();
     tbl.string("next_watering");
+    tbl.string("date_created")
     tbl.string("species");
     tbl.string("description");
     tbl.string("plant_url");
