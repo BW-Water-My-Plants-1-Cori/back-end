@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch --verbose",
     "start": "node index.js",
     "server": "nodemon index.js"
   },
@@ -31,6 +31,10 @@
     "moment": "^2.28.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

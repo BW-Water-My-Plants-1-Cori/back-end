@@ -1,19 +1,17 @@
-const auth = require('../users/usersModel')
 const db = require('../knexconfig')
-const users = require('../users/usersModel')
-const { expectCt } = require('helmet')
 
-describe("clears database", ()=>{
-    beforeEach(async, ()=>{
-        await db("users").truncate()
-    })
-})
+const users = require('./usersModel')
 
 describe("add user", ()=>{
-    it("adds a user to the database", ()=>{
+
+    beforeEach(async ()=>{
+        await db("users").truncate()
+    })
+
+    it("adds a user to the database", async()=>{
         await users.add({username: "Sam", password:"plantyplants", email: "sam@sam.com"})
 
-        let count = db("users")
+        let count = await db("users")
         expect(count).toHaveLength(1)
     })
 
@@ -22,9 +20,8 @@ describe("add user", ()=>{
         await users.add({username: "Frodo", password:"plantyplants", email: "frodo@frodo.com"})
         await users.add({username: "Galdalf", password:"plantyplants", email: "wizards@noemail.com"})
 
-        let count = db("users")
+        let count = await db("users")
         expect(count).toHaveLength(3)
     })
 
-    
 })

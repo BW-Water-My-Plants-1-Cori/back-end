@@ -13,15 +13,7 @@ server.get("/", (req, res) => {
 server.post("/register", (req, res) => {
   const user = req.body;
 
-// user.phonenumber = "Not Registered"
-// user.first_name = "Roman"
-// user.last_name = "Plantski"
-// user.experience = 0
-// user.level = 1
-// user.num_of_plants = 0
-
   if (jwt.isValid(user)) {
-    console.log(user)
     const hash = bcrypt.hashSync(user.password, 12);
     user.password = hash;
     db.add(user)
@@ -37,7 +29,10 @@ server.post("/register", (req, res) => {
         }
       })
       .catch((err) => {
-        res.status(500).json({ message: "Unknown server error", error: err}).end();
+        res
+          .status(500)
+          .json({ message: "Unknown server error", error: err })
+          .end();
       });
   } else {
     res
@@ -53,24 +48,32 @@ server.post("/register", (req, res) => {
 server.post("/login", (req, res) => {
   const user = req.body;
   if (jwt.isValid(user)) {
-    db.findByName(user.username)
-    .then(ret => {
-      if(ret.username && bcrypt.compareSync(ret.password, user.password)){
-        const token = jwt.generateToken(user);
-        res.status(200).json({ message: "Welcome", token, user });
-      } else if(!ret.username ) {
-        res.status(404).json({message: "User does not exist. Server may have been reset. Please add a new user and try again. "}).end()
-       
-      }else{
-        res
-        .status(401)
-        .json({ message: "Invalid Credentials - could be you, could be me!" })
-        .end();
-      }
-    })
-    .catch(err => {
-      res.status(500).json({message: "Unknow server error", error: err})
-    })     
+    db.findByName(user)
+      .then((ret) => {
+        if (ret && bcrypt.compareSync(user.password, ret.password)) {
+          const token = jwt.generateToken(user);
+          res.status(200).json({ message: "Welcome", token, user });
+        } else if (!ret) {
+          res
+            .status(404)
+            .json({
+              message:
+                "User does not exist. Server may have been reset. Please add a new user and try again. ",
+            })
+            .end();
+        } else {
+          res
+            .status(401)
+            .json({
+              message: "Invalid Credentials - could be you, could be me!",
+            })
+            .end()
+            .end();
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ message: "Unknow server error", error: err });
+      });
   } else {
     res
       .status(400)

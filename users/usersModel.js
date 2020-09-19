@@ -1,29 +1,30 @@
-const db = require('../knexconfig')
+const db = require("../knexconfig");
 
-function add(user){
-    return db('users').insert(user)
-    .then(id => {
-        return findById(id[0])
+function add(user) {
+  return db("users")
+    .insert(user)
+    .then((id) => {
+      return findById(id[0]);
     })
-    .catch(err => {
-        return err
-    })
+    .catch((err) => {
+      return err;
+    });
 }
 
-function findById(id){
-    return db('users').where({id}).first()
+function findById(id) {
+  return db("users").where({ id }).first();
 }
 
-function findByName(user){
-    return db('users').where({"username": user}).first()
+function findByName(user) {
+  return db("users").where({ "username": user.username }).first();
 }
 
-function remove(id){
-    return db('users').where({id}).del()
+function remove(id) {
+  return db("users").where({ id }).del();
 }
 
-function update(user){
-    return db('users').where({id}).update(user)
+function update(user) {
+  return db("users").where({ id }).update(user);
 }
 
-module.exports = {add, findById, findByName, remove, update}
+module.exports = { add, findById, findByName, remove, update };
