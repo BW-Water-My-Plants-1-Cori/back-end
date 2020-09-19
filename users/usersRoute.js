@@ -1,5 +1,6 @@
 const express = require('express')
 const db = require('./usersModel')
+const bcrypt = require('bcryptjs')
 const router = express.Router()
 
 router.get('/:id', (req, res)=>{
@@ -29,17 +30,34 @@ router.put('/:id', (req, res)=>{
 db.findById(req.params.id)
 .then(user => {
     if(user){
-      db.update(changes)
-      .then(user => {
-          if(user){
-              res.status(200).json(user).end()
-          }else{
-              res.status(400).json({message: "There was a problem."}).end()
-          }
-      })
-      .catch(err => {
-          res.status(500).json({message: "There was an unknown issue", error: err.message}).end()
-      })  
+        if(changes.password){
+            const hash = bcrypt.hashSync(req.body.password)
+            changes.password = hash
+            db.update(changes, req.params.id)
+            .then(user => {
+                if(user){
+                    res.status(200).json(user).end()
+                }else{
+                    res.status(400).json({message: "There was a problem."}).end()
+                }
+            })
+            .catch(err => {
+                res.status(500).json({message: "There was an unknown issue", error: err.message}).end()
+            })
+        }else{
+            db.update(changes, req.params.id)
+            .then(user => {
+                if(user){
+                    res.status(200).json(user).end()
+                }else{
+                    res.status(400).json({message: "There was a problem."}).end()
+                }
+            })
+            .catch(err => {
+                res.status(500).json({message: "There was an unknown issue", error: err.message}).end()
+            })
+        }
+       
     }else{
         res.status(404).json({message: "This user does not exist"}).end()
     }

@@ -13,14 +13,11 @@ function add(user) {
 }
 
 function findById(id) {
-    return db('users as u').where({'u.id':id})
-    .join('plants as p', 'u.id', 'p.user_id')
-    .select('u.id', 'u.username', 'u.first_name', 'u.last_name', 'u.email', 'u.phonenumber', )
+    return db('users').where({id}).first()
   ;
 }
 
 function findByName(user) {
-  console.log(user)
   return db("users").where({ "username": user.username }).first();
 }
 
@@ -28,8 +25,15 @@ function remove(id) {
   return db("users").where({ id }).del();
 }
 
-function update(user) {
-  return db("users").where({ id }).update(user);
+function update(user, id) {
+  return db("users").where({ id }).update(user)
+  .then(user => {
+    return findById(id)
+  })
+  .catch(err => {
+    return err
+  })
+  ;
 }
 
 module.exports = { add, findById, findByName, remove, update };

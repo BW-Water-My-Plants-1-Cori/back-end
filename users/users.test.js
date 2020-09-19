@@ -122,19 +122,38 @@ describe("add user", () => {
 
       expect(deleted).toBe(0);
     });
-  });
 
-  it("doens't remove things by accident", async () => {
-    await users.add({
-      username: "Sam",
-      password: "plantyplants",
-      email: "sam@sam.com",
+    it("doens't remove things by accident", async () => {
+      await users.add({
+        username: "Sam",
+        password: "plantyplants",
+        email: "sam@sam.com",
+      });
+
+      const deleted = await users.remove(2);
+
+      let count = await db("users");
+
+      expect(count).toHaveLength(1);
     });
-
-    const deleted = await users.remove(2);
-
-    let count = await db("users");
-
-    expect(count).toHaveLength(1);
   });
+  describe("update user", ()=>{
+    beforeEach(async () => {
+        await db("users").truncate();
+      });
+
+      it("returns updated user", async()=>{
+        await users.add({
+            username: "Sam",
+            password: "plantyplants",
+            email: "sam@sam.com",
+          });
+
+         const changes = await users.update({
+            username: "Bob"}, 1);
+
+          expect(changes.username).toBe("Bob")
+      })
+
+  })
 });
