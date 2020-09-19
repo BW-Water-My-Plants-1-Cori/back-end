@@ -20,7 +20,8 @@ function findById(id) {
 }
 
 function findByName(user) {
-  return db("users").where({ "username": user.username }).first().select('*');
+  console.log(user)
+  return db("users").where({ "username": user.username }).first();
 }
 
 function remove(id) {

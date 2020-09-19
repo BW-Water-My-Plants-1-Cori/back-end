@@ -1,10 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
+const morgan = require("morgan");
+const helmet = require("helmet");
+
 const jwt = require("./jwtoken");
 const db = require("../users/usersModel");
 const { generateToken } = require("./jwtoken");
+const users = require("../users/usersRoute");
+const plants = require("../plants/plantsRoute");
 
-const server = express.Router();
+const server = express();
+
+server.use(cors(), express.json(), helmet(), morgan("dev"));
+server.use("/users", users);
+server.use("/plants", plants);
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "Up" });
@@ -13,13 +23,13 @@ server.get("/", (req, res) => {
 server.post("/register", (req, res) => {
   const user = req.body;
 
-  if (jwt.isValid(user)) {
+  if (jwt.isValid(user) && user.email) {
     const hash = bcrypt.hashSync(user.password, 12);
     db.add(user)
       .then((user) => {
         if (user) {
           const token = generateToken(user);
-          res.status(200).json({ message: "Welcome", user, token }).end();
+          res.status(201).json({ message: "Welcome", user, token }).end();
         } else {
           res
             .status(400)
@@ -57,7 +67,7 @@ server.post("/login", (req, res) => {
             .status(404)
             .json({
               message:
-                "User does not exist. Server may have been reset. Please add a new user and try again. ",
+                "User does not exist. Server may have been reset. Please add a new user and try again. If you just added the user, message me.",
             })
             .end();
         } else {
@@ -66,17 +76,16 @@ server.post("/login", (req, res) => {
             .json({
               message: "Invalid Credentials - could be you, could be me!",
             })
-            .end()
             .end();
         }
       })
       .catch((err) => {
-        res.status(500).json({ message: "Unknow server error", error: err });
+        res.status(500).json({ message: "Unknown server error", error: err });
       });
   } else {
     res
       .status(400)
-      .json({ message: "Please fill all fields, definitely you" })
+      .json({ message: "Please fill all fields, most likely you, maybe me" })
       .end();
   }
 });

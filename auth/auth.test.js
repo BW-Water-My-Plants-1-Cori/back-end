@@ -16,7 +16,7 @@ describe("index route", () => {
   });
 
   it("should return a JSON object from the index route", async () => {
-    const expectedBody = { api: "up" };
+    const expectedBody = { api: "Up" };
 
     const response = await supertest(server).get("/");
 
@@ -65,12 +65,11 @@ describe("POST /register", () => {
     const users = await db("users");
     expect(users).toHaveLength(0);
 
-    await supertest(server)
+    const response = await supertest(server)
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
-    const newUsers = await db("users");
-    expect(response.status).toBe(201);
+      expect(response.status).toBe(201)
   });
 
   it("returns 400 when user is not created due to no password", async () => {
