@@ -7,10 +7,10 @@ module.exports = {
       filename: './data/plantbase.db3',
     },
     migrations: {
-      directory: '.data/migrations'
+      directory: './data/migrations'
     },
     seeds:{
-      directory: '.data/seeds'
+      directory: './data/seeds'
     },
     // needed when using foreign keys
     pool: {
