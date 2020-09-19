@@ -22,6 +22,9 @@ When a user waters their plant, they get experience points
 When a user achieves 100 experience points, their level increases
 When a users level increases, their experience resets to 0
 
+# STRETCH
+
+User can log out
 
 # STRETCH
 
@@ -30,17 +33,25 @@ Oldest Plant,
 Newest Plant, 
 Next Watering
 
+# Routes
+
+Will have two routes
+
+/users
+/plants
+
+authorization will have its own place
 
 # Endpoints
 GET
 /users/:id
 /plants/:id
-users/:id/plants -> returns plants ordered by date
+/users/:id/plants -> returns plants ordered by date
 
 POST
 /login -> returns user data + plants
 /register -> returns new user data
-users/:id/plants -> returns all users plants
+/users/:id/plants -> returns all users plants
 
 UPDATE
 /plants/:id
@@ -56,6 +67,8 @@ GET
 
 users/:id/plants/oldest
 users/:id/plants/newest
+
+/logout -> logs user out
 
 # User Schema
 
