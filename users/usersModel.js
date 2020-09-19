@@ -1,13 +1,6 @@
 const db = require("../knexconfig");
 
-function add(newUser) {
-    const user = newUser
-    user.phonenumber = "Not Registered"
-    user.first_name = "Roman";
-    user.last_name = "Plantski";
-    user.experience = 0;
-    user.level = 1
-    user.num_of_plants = 0;
+function add(user) {
 
   return db("users")
     .insert(user)
