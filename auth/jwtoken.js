@@ -16,10 +16,8 @@ function generateToken({ id, username }) {
 }
 
 function isValid(user){
-    function isValid(user) {
         return Boolean(user.username && user.password && typeof user.password === "string");
       }
       
-}
 
 module.exports = {generateToken, isValid}
