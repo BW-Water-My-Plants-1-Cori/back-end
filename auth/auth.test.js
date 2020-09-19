@@ -69,7 +69,7 @@ describe("POST /register", () => {
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
-      expect(response.status).toBe(201)
+    expect(response.status).toBe(201);
   });
 
   it("returns 400 when user is not created due to no password", async () => {
@@ -134,8 +134,8 @@ describe("POST /login", () => {
     const res = await supertest(server)
       .post("/login")
       .send({ username: "sam", password: "pass" });
-
-    expect(res.status).toBe(200);
+    const expectedStatus = 200;
+    expect(res.status).toBe(expectedStatus);
   });
 
   it("returns token when login is sucessful", async () => {
