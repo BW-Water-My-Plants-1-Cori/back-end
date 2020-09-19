@@ -1,4 +1,6 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
+const jwt = require('./jwtoken')
 
 const server = express.Router()
 
@@ -13,5 +15,8 @@ server.post('/register', (req, res)=>{
 server.post('/login', (req, res)=>{
 
 })
+
+
+
 
 module.exports = server
