@@ -1,5 +1,6 @@
 const express = require('express')
 const db = require('./usersModel')
+const plants = require('../plants/plantsModel')
 const bcrypt = require('bcryptjs')
 const router = express.Router()
 
@@ -18,11 +19,32 @@ router.get('/:id', (req, res)=>{
 })
 
 router.get('/:id/plants',(req, res)=>{
+    plants.fetchByUserId(req.params.id)
+    .then(plants => {
+        if(plants){
+            res.status(200).json(plants).end()
+        }else{
+            res.status(404).json({message: "THIS USER HAS NO PLANTS"}).end()
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message: "Something went wrong"}).end()
+    })
 
 })
 
 router.post('/:id/plants', (req, res)=>{
-
+    plants.add(req.params.id, req.body)
+    .then(plant => {
+        if(plant){
+            res.status(200).json(plant).end()
+        }else{
+            res.status(404).json({message: "This is not the plant you are looking for"}).end();
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({message: "Nope."}).end();
+    })
 })
 
 router.put('/:id', (req, res)=>{
