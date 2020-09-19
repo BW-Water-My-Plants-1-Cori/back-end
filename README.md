@@ -86,6 +86,7 @@ users/:id/plants/newest
 “experience”: integer(backend provided)
 "level": integer(backend provided)
 "num_of_plants": integer (backend provided)
+
 }
 
 # Plant Schema
