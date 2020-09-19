@@ -1,10 +1,11 @@
 const db = require("../knexconfig");
 
 function add(user) {
+
   return db("users")
     .insert(user)
     .then((id) => {
-      return findById(id[0]);
+      return db("users").where({"id": id[0]}).first();
     })
     .catch((err) => {
       return err;
@@ -12,7 +13,8 @@ function add(user) {
 }
 
 function findById(id) {
-  return db("users").where({ id }).first();
+    return db('users').where({id}).first()
+  ;
 }
 
 function findByName(user) {
@@ -23,8 +25,15 @@ function remove(id) {
   return db("users").where({ id }).del();
 }
 
-function update(user) {
-  return db("users").where({ id }).update(user);
+function update(user, id) {
+  return db("users").where({ id }).update(user)
+  .then(user => {
+    return findById(id)
+  })
+  .catch(err => {
+    return err
+  })
+  ;
 }
 
 module.exports = { add, findById, findByName, remove, update };

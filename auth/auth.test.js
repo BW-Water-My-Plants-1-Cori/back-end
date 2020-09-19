@@ -16,7 +16,7 @@ describe("index route", () => {
   });
 
   it("should return a JSON object from the index route", async () => {
-    const expectedBody = { api: "up" };
+    const expectedBody = { api: "Up" };
 
     const response = await supertest(server).get("/");
 
@@ -65,11 +65,10 @@ describe("POST /register", () => {
     const users = await db("users");
     expect(users).toHaveLength(0);
 
-    await supertest(server)
+    const response = await supertest(server)
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
-    const newUsers = await db("users");
     expect(response.status).toBe(201);
   });
 
@@ -135,8 +134,8 @@ describe("POST /login", () => {
     const res = await supertest(server)
       .post("/login")
       .send({ username: "sam", password: "pass" });
-
-    expect(res.status).toBe(200);
+    const expectedStatus = 200;
+    expect(res.status).toBe(expectedStatus);
   });
 
   it("returns token when login is sucessful", async () => {
