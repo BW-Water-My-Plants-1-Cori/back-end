@@ -1,7 +1,6 @@
 const db = require('../knexconfig')
 
 const users = require('./usersModel')
-
 describe("add user", ()=>{
 
     beforeEach(async ()=>{
@@ -24,4 +23,30 @@ describe("add user", ()=>{
         expect(count).toHaveLength(3)
     })
 
+    describe("find by id", ()=>{
+        it("returns a user with matching id", async ()=>{
+            await users.add({username: "Sam", password:"plantyplants", email: "sam@sam.com"})
+
+            await users.findById(1)
+
+            let count = await db("users")
+
+            expect(count).toHaveLength(1)
+        })
+    })
+
+    describe("find by username", ()=>{
+        beforeEach(async ()=>{
+            await db("users").truncate()
+        })
+        it("returns a user with matching username", async () =>{
+            await users.add({username: "Sam", password:"plantyplants", email: "sam@sam.com"})
+
+            await users.findByName({username: "Sam"})
+
+            let count = await db("users")
+
+            expect(count).toHaveLength(1)
+        })
+    })
 })

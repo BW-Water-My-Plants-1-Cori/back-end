@@ -15,7 +15,6 @@ server.post("/register", (req, res) => {
 
   if (jwt.isValid(user)) {
     const hash = bcrypt.hashSync(user.password, 12);
-    user.password = hash;
     db.add(user)
       .then((user) => {
         if (user) {
