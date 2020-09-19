@@ -28,6 +28,10 @@ User can log out
 
 # STRETCH
 
+User can see number of plants
+
+# STRETCH
+
 A user will be able to order their plants by 
 Oldest Plant, 
 Newest Plant, 
@@ -79,8 +83,9 @@ users/:id/plants/newest
 “password”: string
 “first_name”: string
 “last_name”: string
-“experience”: integer
-"level": integer
+“experience”: integer(backend provided)
+"level": integer(backend provided)
+"num_of_plants": integer (backend provided)
 }
 
 # Plant Schema
