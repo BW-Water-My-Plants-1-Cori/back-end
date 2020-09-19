@@ -67,6 +67,7 @@ users/:id/plants/newest
 “first_name”: string
 “last_name”: string
 “experience”: integer
+"level" : integer
 }
 
 # Plant Schema
