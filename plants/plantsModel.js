@@ -60,25 +60,6 @@ function add(id, plant) {
           return err;
         });
     });
-
-  // .then(id => {
-  //     console.log(id)
-  //     return users.findById(plant.user_id)
-  //     .then(user => {
-  //         console.log("pm 26")
-  //         const changes = user
-  //         changes.experience = user.experience + 5
-  //         changes.num_of_plants = user.num_of_plants + 1
-  //         return users.update(changes, id)
-  //     })
-  //     .catch(err => {
-  //         return err
-  //     })
-  // })
-  // .catch(err => {
-  //     console.log(err.message)
-  //     return err
-  // })
 }
 
 function update(id, plant) {
@@ -126,7 +107,48 @@ function water(id) {
 }
 
 function remove(id) {
-  return db("plants").where({ id }).del();
+  return db("plants").where({ id })
+  .then((plant) => {
+    return db("users").where({ id }).first()
+      .then((user) => {
+          const changes = user
+          changes.experience = user.experience -7
+          changes.num_of_plants = user.num_of_plants -1
+          if(changes.experience < 0){
+              changes.experience = 0
+              changes.level = user.level -1
+          }
+          return db("users").where({id}).update(changes)
+            .then(changed => {
+                return db("plants").where({"user_id": id}).join("users", "users.id", "plants.user_id").select("*")
+                .then(plants => {
+                    const resultMap = plants.reduce((result, row) => {
+                        result[row.user_id] = result[row.user_id] || {
+                          ...row,
+                          plants: []
+                        };
+                        result[row.user_id].plants.push(row);
+                        return result;
+                      }, {});
+                      return resultMap;
+                })
+                .catch(err => {
+                    return err
+                })
+            })
+            .catch(err => {
+                return err
+            })
+          })
+          
+          .catch(err => {
+              return err
+          })
+          .catch(err =>{
+              return err
+          })
+  })
+
   // return findById(id)
   // .then(plant => {
   //     return users.findById(plant.user_id)
