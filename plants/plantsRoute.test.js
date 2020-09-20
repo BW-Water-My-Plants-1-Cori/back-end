@@ -53,7 +53,7 @@ describe("GET users/:id/plants", () => {
   });
 
   it("returns 404 if no user", async () => {
-    const newUsers = await supertest(server).get("/users/1/plants");
+    const newUsers = await supertest(server).get("/users/500/plants");
 
     expect(newUsers.status).toBe(404);
   });
@@ -204,7 +204,7 @@ describe("PUT /users/:id", () => {
     });
   
     it("returns 404 if no user", async () => {
-      const newUsers = await supertest(server).delete("/plants/1");
+      const newUsers = await supertest(server).delete("/plants/599");
   
       expect(newUsers.status).toBe(404);
     });

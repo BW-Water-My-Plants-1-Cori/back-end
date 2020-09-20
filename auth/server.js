@@ -62,7 +62,7 @@ server.post("/login", (req, res) => {
       .then((ret) => {
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
           const token = jwt.generateToken(user);
-          res.status(200).json({ message: "Welcome", token, ret });
+          res.status(200).json({ message: "Welcome", token, user: ret });
         } else if (!ret) {
           res
             .status(404)
