@@ -148,24 +148,6 @@ function remove(id) {
               return err
           })
   })
-
-  // return findById(id)
-  // .then(plant => {
-  //     return users.findById(plant.user_id)
-  //     .then(user => {
-  //         user.num_of_plants - 1
-  //         user.experience - 5
-  //         return db("plants").where({id}).del()
-  //         .then(id => {
-  //             return users.findById(user.id)
-  //         })
-  //         .catch(err => {
-  //             return err
-  //         })
-  //     })
-  //     .catch(err => {return err})
-  // })
-  // .catch(err => {return err})
 }
 
 module.exports = { add, update, findById, fetchByUserId, remove, water };
