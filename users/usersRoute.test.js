@@ -29,31 +29,23 @@ describe("GET /user/:id", () => {
     await db("users").truncate();
   });
 
-  it("returns a user by id", async () => {
-    await supertest(server)
-      .post("/register")
-      .send({ username: "sam", password: "pass", email: "email@email.com" });
-
-    const newUsers = await supertest(server).get("/users/1");
-
-    expect(newUsers.status).toBe(200);
-  });
-
-  it("returns 200 if user", async () => {
-    await supertest(server)
-      .post("/register")
-      .send({ username: "sam", password: "pass", email: "email@email.com" });
-
-    const newUsers = await supertest(server).get("/users/1");
-
-    expect(newUsers.status).toBe(200);
-  });
-
   it("returns 404 if no user", async () => {
     const newUsers = await supertest(server).get("/users/1");
 
     expect(newUsers.status).toBe(404);
   });
+
+  it("returns 200 if user", async () => {
+    const user = await supertest(server)
+      .post("/register")
+      .send({ username: "sam", password: "pass", email: "email@email.com" });
+
+    const newUsers = await supertest(server).get(`/users/${user.body.id}`);
+
+    expect(newUsers.status).toBe(200);
+  });
+
+
 });
 
 describe("PUT /users/:id", () => {

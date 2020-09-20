@@ -13,9 +13,7 @@ function add(user) {
 }
 
 function findById(id) {
-  return db("plants").where({"user_id":id}).orderBy("next_watering")
-  .join("users", "plants.user_id", "users.id")
-  .select("*")
+  return db("users").where({id}).first()
 }
 
 function findByName(user) {
