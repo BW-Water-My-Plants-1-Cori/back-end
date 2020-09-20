@@ -31,7 +31,7 @@ describe("GET users/:id/plants", () => {
   });
 
   it("returns a plant by id", async () => {
-    await supertest(server)
+    const user = await supertest(server)
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
@@ -40,14 +40,14 @@ describe("GET users/:id/plants", () => {
     .send({ username: "sam", password: "pass"})
 
     await supertest(server)
-    .post('/users/:id/plants')
+    .post(`/users/${user.body.id}/plants`)
     .send({plant_name: "It's a plant",
     description: "still a plant",
     date_last_watered: "09 03 2020",
     increment: 6,
     species: "Plant"})
 
-    const newUsers = await supertest(server).get("/users/1/plants");
+    const newUsers = await supertest(server).get(`/users/${user.body.id}/plants`);
 
     expect(newUsers.status).toBe(200);
   });
@@ -75,7 +75,7 @@ describe("GET /plants/:id", () => {
       .send({ username: "sam", password: "pass"})
   
       await supertest(server)
-      .post('/users/:id/plants')
+      .post(`/users/${user.body.id}/plants`)
       .send({plant_name: "It's a plant",
       description: "still a plant",
       date_last_watered: "09 03 2020",
@@ -88,7 +88,7 @@ describe("GET /plants/:id", () => {
     });
   
     it("returns 404 if no plant", async () => {
-      const newUsers = await supertest(server).get("/plants/:id");
+      const newUsers = await supertest(server).get("/plants/6666666");
   
       expect(newUsers.status).toBe(404);
     });
@@ -101,13 +101,13 @@ describe("PUT /users/:id", () => {
   });
 
   it("returns 404 if no plants", async () => {
-    const newUsers = await supertest(server).put("/plants/1");
+    const newUsers = await supertest(server).put("/plants/999999");
 
     expect(newUsers.status).toBe(404);
   });
 
   it("returns 200 if plant", async () => {
-    await supertest(server)
+   const user =  await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
@@ -115,21 +115,21 @@ describe("PUT /users/:id", () => {
       .post("/login")
       .send({ username: "sam", password: "pass"})
   
-      await supertest(server)
-      .post('/users/:id/plants')
+      const plant = await supertest(server)
+      .post(`/users/${user.body.id}/plants`)
       .send({plant_name: "It's a plant",
       description: "still a plant",
       date_last_watered: "09 03 2020",
       increment: 6,
       species: "Plant"})
 
-      const newUsers = await supertest(server).get('/plants/1')
+      const newUsers = await supertest(server).get(`/plants/${plant.body.id}`)
 
     expect(newUsers.status).toBe(200);
   });
 
   it("returns changed information", async () => {
-    await supertest(server)
+   const user = await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
@@ -137,8 +137,8 @@ describe("PUT /users/:id", () => {
       .post("/login")
       .send({ username: "sam", password: "pass"})
   
-      await supertest(server)
-      .post('/users/:id/plants')
+      const plant = await supertest(server)
+      .post(`/users/${user.body.id}/plants`)
       .send({plant_name: "It's a plant",
       description: "still a plant",
       date_last_watered: "09 03 2020",
@@ -146,14 +146,14 @@ describe("PUT /users/:id", () => {
       species: "Plant"})
 
     const newUsers = await supertest(server)
-      .put("/plants/1")
+      .put(`/plants/${plant.body.id}`)
       .send({ plant_name: "NOT A PLANT! MISTAKE!" });
 
     expect(newUsers.status).toBe(200);
   });
 
   it("returns 400 when requrest is bad", async () => {
-    await supertest(server)
+    const user = await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
@@ -162,7 +162,7 @@ describe("PUT /users/:id", () => {
       .send({ username: "sam", password: "pass"})
   
       await supertest(server)
-      .post('/users/:id/plants')
+      .post(`/users/${user.body.id}plants`)
       .send({plant_name: "It's a plant",
       description: "still a plant",
       date_last_watered: "09 03 2020",
@@ -182,7 +182,7 @@ describe("PUT /users/:id", () => {
     });
   
     it("returns 204 if plant deleted", async () => {
-        await supertest(server)
+      const user =   await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
@@ -190,15 +190,15 @@ describe("PUT /users/:id", () => {
       .post("/login")
       .send({ username: "sam", password: "pass"})
   
-      await supertest(server)
-      .post('/users/:id/plants')
+     const plant =  await supertest(server)
+      .post(`/users/${user.body.id}/plants`)
       .send({plant_name: "It's a plant",
       description: "still a plant",
       date_last_watered: "09 03 2020",
       increment: 6,
       species: "Plant"})
   
-      const newUsers = await supertest(server).delete("/plants/1");
+      const newUsers = await supertest(server).delete(`/plants/${plant.body.id}`);
   
       expect(newUsers.status).toBe(204);
     });
