@@ -1,9 +1,9 @@
 const db = require("../knexconfig");
+const plants = require('../plants/plantsModel')
 
 function add(user) {
 
-  return db("users")
-    .insert(user)
+  return db("users").insert(user)
     .then((id) => {
       return db("users").where({"id": id[0]}).first();
     })
@@ -13,12 +13,14 @@ function add(user) {
 }
 
 function findById(id) {
-    return db('users').where({id}).first()
-  ;
+  return db("plants").where({"user_id":id}).orderBy("next_watering")
+  .join("users", "plants.user_id", "users.id")
+  .select("*")
 }
 
 function findByName(user) {
-  return db("users").where({ "username": user.username }).first();
+  return db("users").where({ "username": user.username }).first()
+
 }
 
 function remove(id) {
@@ -26,6 +28,7 @@ function remove(id) {
 }
 
 function update(user, id) {
+  console.log("to the user")
   return db("users").where({ id }).update(user)
   .then(user => {
     return findById(id)
