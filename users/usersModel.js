@@ -26,7 +26,6 @@ function remove(id) {
 }
 
 function update(user, id) {
-  console.log("to the user")
   return db("users").where({ id }).update(user)
   .then(user => {
     return findById(id)

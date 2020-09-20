@@ -30,7 +30,7 @@ describe("GET /user/:id", () => {
   });
 
   it("returns 404 if no user", async () => {
-    const newUsers = await supertest(server).get("/users/1");
+    const newUsers = await supertest(server).get("/users/50000");
 
     expect(newUsers.status).toBe(404);
   });
@@ -54,30 +54,30 @@ describe("PUT /users/:id", () => {
   });
 
   it("returns 404 if no user", async () => {
-    const newUsers = await supertest(server).put("/users/1");
+    const newUsers = await supertest(server).put("/users/5000000");
 
     expect(newUsers.status).toBe(404);
   });
 
   it("returns 200 if user", async () => {
-    await supertest(server)
+    const user = await supertest(server)
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
     const newUsers = await supertest(server)
-      .put("/users/1")
+      .put(`/users/${user.body.id}`)
       .send({ username: "bob", password: "pass", email: "email@email.com" });
 
     expect(newUsers.status).toBe(200);
   });
 
   it("returns changed information", async () => {
-    await supertest(server)
+    const user = await supertest(server)
       .post("/register")
       .send({ username: "sam", password: "pass", email: "email@email.com" });
 
     const newUsers = await supertest(server)
-      .put("/users/1")
+      .put(`/users/${user.body.id}`)
       .send({ username: "bob", password: "pass", email: "email@email.com" });
 
     expect(newUsers.status).toBe(200);
@@ -100,17 +100,17 @@ describe("PUT /users/:id", () => {
     });
   
     it("returns 204 if user deleted", async () => {
-      await supertest(server)
+      const user = await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
-      const newUsers = await supertest(server).delete("/users/1");
+      const newUsers = await supertest(server).delete(`/users/${user.body.id}`);
   
       expect(newUsers.status).toBe(204);
     });
   
     it("returns 404 if no user", async () => {
-      const newUsers = await supertest(server).delete("/users/1");
+      const newUsers = await supertest(server).delete("/users/777777777777");
   
       expect(newUsers.status).toBe(404);
     });
