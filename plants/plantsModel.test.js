@@ -1,6 +1,6 @@
 const db = require("../knexconfig");
 const plants = require("./plantsModel");
-const users = require("../usersModel");
+const users = require("../users/usersModel");
 describe("add plant", () => {
   beforeEach(async () => {
     await db("users").truncate()
