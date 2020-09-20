@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 const mw = require("./usersMiddleware");
 
+router.use("/:id", mw.verifyUser)
+
 router.get("/:id", (req, res) => {
   db.findById(req.params.id)
     .then((user) => {
@@ -25,7 +27,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/:id/plants", mw.verifyUser, (req, res) => {
+router.get("/:id/plants", (req, res) => {
   plants
     .fetchByUserId(req.params.id)
     .then((plants) => {
@@ -40,7 +42,7 @@ router.get("/:id/plants", mw.verifyUser, (req, res) => {
     });
 });
 
-router.post("/:id/plants", mw.verifyUser, (req, res) => {
+router.post("/:id/plants", (req, res) => {
   plants
     .add(req.params.id, req.body)
     .then((plant) => {
@@ -58,7 +60,7 @@ router.post("/:id/plants", mw.verifyUser, (req, res) => {
     });
 });
 
-router.put("/:id", mw.verifyUser, mw.verifyForm, (req, res) => {
+router.put("/:id", mw.verifyForm, (req, res) => {
   const changes = req.body;
   if (changes.password) {
     const hash = bcrypt.hashSync(req.body.password);
@@ -80,7 +82,7 @@ router.put("/:id", mw.verifyUser, mw.verifyForm, (req, res) => {
     });
 });
 
-router.delete("/:id", mw.verifyUser, (req, res) => {
+router.delete("/:id", (req, res) => {
   db.remove(user.id)
     .then((num) => {
       if (num !== 0) {
