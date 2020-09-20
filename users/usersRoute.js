@@ -4,6 +4,7 @@ const plants = require("../plants/plantsModel");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const mw = require("./usersMiddleware");
+const pmw = require("../plants/plantsMiddleware")
 
 router.use("/:id", mw.verifyUser)
 
@@ -42,8 +43,9 @@ router.get("/:id/plants", (req, res) => {
     });
 });
 
-router.post("/:id/plants", (req, res) => {
-  plants
+router.post("/:id/plants", pmw.validPlantForm, (req, res) => {
+  if(pmw.isValid(req.body)){
+    plants
     .add(req.params.id, req.body)
     .then((plant) => {
       if (plant) {
@@ -58,6 +60,10 @@ router.post("/:id/plants", (req, res) => {
     .catch((err) => {
       res.status(500).json({ message: "Nope." }).end();
     });
+  }else{
+    res.status(400).json({message: "Please fill required fields."}).end()
+  }
+  
 });
 
 router.put("/:id", mw.verifyForm, (req, res) => {

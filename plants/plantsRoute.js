@@ -19,7 +19,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", mw.validPlantForm, (req, res) => {
   db.update(req.params.id, req.body)
     .then((update) => {
       res.status(200).json(update).end();
