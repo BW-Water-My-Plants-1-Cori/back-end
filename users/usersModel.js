@@ -46,38 +46,6 @@ function findById(id) {
 
 function findByName(user) {
   return db("users").where({ "username": user.username }).first()
-  .then(user => {
-    return db("plants").where({"user_id": user.id}).join("users", "users.id", "plants.user_id").select("*")
-    .then(plants => {
-     if(plants.length > 0){
-      const resultMap = plants.reduce((result, row) => {
-        result[row.user_id] = result[row.id] || {
-          ...row,
-          plants: [],
-        };
-        result[row.user_id].plants.push({
-          plant_name: row.plant_name,
-          date_last_watered: row.date_last_watered,
-          next_watering: row.next_watering,
-          date_created: row.date_created,
-          increment: row.increment,
-          species: row.species,
-          desription: row.description,
-          plant_url: row.plant_url,
-        });
-        return result;
-      }, {});
-      return resultMap; 
-     }else{
-       return db("users").where({ "username": user.username }).first()
-     }
-
-    })
-  })
-  .catch(err => {
-    return err
-  })
-
 }
 
 function remove(id) {
