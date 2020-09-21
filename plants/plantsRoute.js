@@ -22,17 +22,31 @@ router.get("/:id", (req, res) => {
 router.put("/:id", mw.validPlantForm, (req, res) => {
   db.update(req.params.id, req.body)
     .then((update) => {
-      res.status(200).json(update).end();
+      res.status(200).json({plant: update}).end();
     })
     .catch((err) => {
       res.status(500).json({ message: "Oddball Error", error: err }).end();
     });
 });
 
+router.put("/:id/water", (req, res)=>{
+  db.water(req.params.id)
+  .then(ret =>{
+    if(ret.length>0){
+      res.status(200).json({message: "Watered", user: ret}).end()
+    }else{
+      res.status(400).json({message: "Plant could not be watered"}).end()
+    }
+  })
+  .catch(err=>{
+    res.status(500).json({message: "Something went wrong"}).end()
+  })
+})
+
 router.delete("/:id", (req, res) => {
         db.remove(req.params.id)
           .then((data) => {
-            res.status(204).json(data).end();
+            res.status(204).json({user: data}).end();
           })
           .catch((err) => {
             res

@@ -33,7 +33,7 @@ router.get("/:id/plants", (req, res) => {
     .fetchByUserId(req.params.id)
     .then((plants) => {
       if (plants) {
-        res.status(200).json(plants).end();
+        res.status(200).json(plant).end();
       } else {
         res.status(404).json({ message: "THIS USER HAS NO PLANTS" }).end();
       }
@@ -47,9 +47,9 @@ router.post("/:id/plants", pmw.validPlantForm, (req, res) => {
   if(pmw.isValid(req.body)){
     plants
     .add(req.params.id, req.body)
-    .then((plant) => {
-      if (plant) {
-        res.status(200).json(plant).end();
+    .then((user) => {
+      if (user.length>0) {
+        res.status(200).json(user).end();
       } else {
         res
           .status(404)
@@ -74,7 +74,7 @@ router.put("/:id", mw.verifyForm, (req, res) => {
   }
   db.update(changes, req.params.id)
     .then((user) => {
-      if (user) {
+      if (user.length>0) {
         res.status(200).json(user).end();
       } else {
         res.status(400).json({ message: "There was a problem." }).end();
