@@ -15,15 +15,20 @@ function add(user) {
 function findById(id) {
   return db("plants").where({"user_id": id}).join("users", "users.id", "plants.user_id").select("*")
   .then(plants => {
+    if(plants.length > 0){
       const resultMap = plants.reduce((result, row) => {
-          result[row.user_id] = result[row.user_id] || {
-            ...row,
-            plants: []
-          };
-          result[row.user_id].plants.push(row);
-          return result;
-        }, {});
-        return resultMap;
+        result[row.user_id] = result[row.user_id] || {
+          ...row,
+          plants: []
+        };
+        result[row.user_id].plants.push(row);
+        return result;
+      }, {});
+      return resultMap;
+    }else{
+      return db("users").where({id}).first()
+    }
+
   })
   .catch(err => {
     return err
@@ -32,6 +37,28 @@ function findById(id) {
 
 function findByName(user) {
   return db("users").where({ "username": user.username }).first()
+  .then(user => {
+    return db("plants").where({"user_id": user.id}).join("users", "users.id", "plants.user_id").select("*")
+    .then(plants => {
+     if(plants.length > 0){
+      const resultMap = plants.reduce((result, row) => {
+        result[row.user_id] = result[row.user_id] || {
+          ...row,
+          plants: []
+        };
+        result[row.user_id].plants.push(row);
+        return result;
+      }, {});
+      return resultMap; 
+     }else{
+       return db("users").where({ "username": user.username }).first()
+     }
+
+    })
+  })
+  .catch(err => {
+    return err
+  })
 
 }
 
