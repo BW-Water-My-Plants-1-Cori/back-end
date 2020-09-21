@@ -63,9 +63,16 @@ server.post("/login", (req, res) => {
       .then((ret) => {
         console.log(ret)
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
-          const token = jwt.generateToken(user);
-          console.log("3")
-          res.status(200).json({ message: "Welcome", token, user: ret });
+
+          db.findById(ret.id)
+          .then(user => {
+            const token = jwt.generateToken(user);
+            res.status(200).json({ message: "Welcome", token, user: user }).end();
+          })
+          .catch(err => {
+            res.status(500).json({message: "This did not work."}).end()
+          })
+
         } else if (!ret) {
           res
             .status(404)
