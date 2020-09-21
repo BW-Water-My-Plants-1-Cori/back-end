@@ -61,9 +61,10 @@ server.post("/login", (req, res) => {
   if (jwt.isValid(user)) {
     db.findByName(user)
       .then((ret) => {
-        console.log(ret, 1)
+        console.log(ret)
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
           const token = jwt.generateToken(user);
+          console.log("3")
           res.status(200).json({ message: "Welcome", token, user: ret });
         } else if (!ret) {
           res
