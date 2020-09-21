@@ -16,7 +16,7 @@ function add(id, plant) {
   plant.user_id = id;
   plant.date_created = moment().format("L");
 
-//    plant.last_watered = moment(plant.last_watered, "DDMMYYYY").format('L')
+  //    plant.last_watered = moment(plant.last_watered, "DDMMYYYY").format('L')
   // plant.next_watering = moment(plant.last_watered, DDMMYYYY).add(plant.increment, 'days').calendar()
 
   return db("plants")
@@ -137,15 +137,19 @@ function remove(id) {
                 .join("users", "users.id", "plants.user_id")
                 .select("*")
                 .then((plants) => {
-                  const resultMap = plants.reduce((result, row) => {
-                    result[row.user_id] = result[row.user_id] || {
-                      ...row,
-                      plants: [],
-                    };
-                    result[row.user_id].plants.push(row);
-                    return result;
-                  }, {});
-                  return resultMap;
+                  if (plants.length > 0) {
+                    const resultMap = plants.reduce((result, row) => {
+                      result[row.user_id] = result[row.user_id] || {
+                        ...row,
+                        plants: [],
+                      };
+                      result[row.user_id].plants.push(row);
+                      return result;
+                    }, {});
+                    return resultMap;
+                  } else {
+                    return db("users").where({ id }).first();
+                  }
                 })
                 .catch((err) => {
                   return err;
