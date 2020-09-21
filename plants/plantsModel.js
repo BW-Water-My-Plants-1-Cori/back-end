@@ -22,36 +22,43 @@ function add(id, plant) {
   return db("plants")
     .insert(plant)
     .then((plant) => {
-      return db("users").where({ id }).first()
+      return db("users")
+        .where({ id })
+        .first()
         .then((user) => {
-            const changes = user
-            changes.experience = user.experience +7
-            changes.num_of_plants = user.num_of_plants +1
-            if(changes.experience > 100){
-                changes.experience = user.experience - 100 + 7
-                changes.level = user.level +1
-            }
-            return db("users").where({id}).update(changes)
-            .then(changed => {
-                return db("plants").where({"user_id": id}).join("users", "users.id", "plants.user_id").select("*")
-                .then(plants => {
-                    const resultMap = plants.reduce((result, row) => {
-                        result[row.user_id] = result[row.user_id] || {
-                          ...row,
-                          plants: []
-                        };
-                        result[row.user_id].plants.push(row);
-                        return result;
-                      }, {});
-                      return resultMap;
+          const changes = user;
+          changes.experience = user.experience + 7;
+          changes.num_of_plants = user.num_of_plants + 1;
+          if (changes.experience > 100) {
+            changes.experience = user.experience - 100 + 7;
+            changes.level = user.level + 1;
+          }
+          return db("users")
+            .where({ id })
+            .update(changes)
+            .then((changed) => {
+              return db("plants")
+                .where({ user_id: id })
+                .join("users", "users.id", "plants.user_id")
+                .select("*")
+                .then((plants) => {
+                  const resultMap = plants.reduce((result, row) => {
+                    result[row.user_id] = result[row.user_id] || {
+                      ...row,
+                      plants: [],
+                    };
+                    result[row.user_id].plants.push(row);
+                    return result;
+                  }, {});
+                  return resultMap;
                 })
-                .catch(err => {
-                    return err
-                })
+                .catch((err) => {
+                  return err;
+                });
             })
-            .catch(err => {
-                return err
-            })
+            .catch((err) => {
+              return err;
+            });
         })
         .catch((err) => {
           return err;
@@ -107,47 +114,55 @@ function water(id) {
 }
 
 function remove(id) {
-  return db("plants").where({ id })
-  .then((plant) => {
-    return db("users").where({ id }).first()
-      .then((user) => {
-          const changes = user
-          changes.experience = user.experience -7
-          changes.num_of_plants = user.num_of_plants -1
-          if(changes.experience < 0){
-              changes.experience = 0
-              changes.level = user.level -1
+  return db("plants")
+    .where({ id })
+    .then((plant) => {
+      return db("users")
+        .where({ id })
+        .first()
+        .then((user) => {
+          const changes = user;
+          changes.experience = user.experience - 7;
+          changes.num_of_plants = user.num_of_plants - 1;
+          if (changes.experience < 0) {
+            changes.experience = 0;
+            changes.level = user.level - 1;
           }
-          return db("users").where({id}).update(changes)
-            .then(changed => {
-                return db("plants").where({"user_id": id}).join("users", "users.id", "plants.user_id").select("*")
-                .then(plants => {
-                    const resultMap = plants.reduce((result, row) => {
-                        result[row.user_id] = result[row.user_id] || {
-                          ...row,
-                          plants: []
-                        };
-                        result[row.user_id].plants.push(row);
-                        return result;
-                      }, {});
-                      return resultMap;
+          return db("users")
+            .where({ id })
+            .update(changes)
+            .then((changed) => {
+              return db("plants")
+                .where({ user_id: id })
+                .join("users", "users.id", "plants.user_id")
+                .select("*")
+                .then((plants) => {
+                  const resultMap = plants.reduce((result, row) => {
+                    result[row.user_id] = result[row.user_id] || {
+                      ...row,
+                      plants: [],
+                    };
+                    result[row.user_id].plants.push(row);
+                    return result;
+                  }, {});
+                  return resultMap;
                 })
-                .catch(err => {
-                    return err
-                })
+                .catch((err) => {
+                  return err;
+                });
             })
-            .catch(err => {
-                return err
-            })
-          })
-          
-          .catch(err => {
-              return err
-          })
-          .catch(err =>{
-              return err
-          })
-  })
+            .catch((err) => {
+              return err;
+            });
+        })
+
+        .catch((err) => {
+          return err;
+        })
+        .catch((err) => {
+          return err;
+        });
+    });
 }
 
 module.exports = { add, update, findById, fetchByUserId, remove, water };

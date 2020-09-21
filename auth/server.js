@@ -9,6 +9,7 @@ const db = require("../users/usersModel");
 const { generateToken } = require("./jwtoken");
 const users = require("../users/usersRoute");
 const plants = require("../plants/plantsRoute");
+const mw = require("../users/usersMiddleware")
 
 const server = express();
 
@@ -20,7 +21,7 @@ server.get("/", (req, res) => {
   res.status(200).json({ api: "Up" });
 });
 
-server.post("/register", (req, res) => {
+server.post("/register", mw.verifyForm, jwt.checkUser, (req, res) => {
   const user = req.body;
 
   if (jwt.isValid(user) && user.email) {
