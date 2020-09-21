@@ -44,9 +44,18 @@ function add(id, plant) {
                   const resultMap = plants.reduce((result, row) => {
                     result[row.user_id] = result[row.id] || {
                       ...row,
-                      plants: []
+                      plants: [],
                     };
-                    result[row.user_id].plants.push({plant_name: row.plant_name, date_last_watered: row.date_last_watered, next_watering:row.next_watering, date_created:row.date_created, increment:row.increment, species: row.species, desription:row.description, plant_url:row.plant_url});
+                    result[row.user_id].plants.push({
+                      plant_name: row.plant_name,
+                      date_last_watered: row.date_last_watered,
+                      next_watering: row.next_watering,
+                      date_created: row.date_created,
+                      increment: row.increment,
+                      species: row.species,
+                      desription: row.description,
+                      plant_url: row.plant_url,
+                    });
                     return result;
                   }, {});
                   return resultMap;
@@ -108,11 +117,20 @@ function water(id) {
                 .select("*")
                 .then((plants) => {
                   const resultMap = plants.reduce((result, row) => {
-                    result[row.user_id] = result[row.user_id] || {
+                    result[row.user_id] = result[row.id] || {
                       ...row,
                       plants: [],
                     };
-                    result[row.user_id].plants.push(row);
+                    result[row.user_id].plants.push({
+                      plant_name: row.plant_name,
+                      date_last_watered: row.date_last_watered,
+                      next_watering: row.next_watering,
+                      date_created: row.date_created,
+                      increment: row.increment,
+                      species: row.species,
+                      desription: row.description,
+                      plant_url: row.plant_url,
+                    });
                     return result;
                   }, {});
                   return resultMap;
@@ -160,11 +178,20 @@ function remove(id) {
                 .then((plants) => {
                   if (plants.length > 0) {
                     const resultMap = plants.reduce((result, row) => {
-                      result[row.user_id] = result[row.user_id] || {
+                      result[row.user_id] = result[row.id] || {
                         ...row,
                         plants: [],
                       };
-                      result[row.user_id].plants.push(row);
+                      result[row.user_id].plants.push({
+                        plant_name: row.plant_name,
+                        date_last_watered: row.date_last_watered,
+                        next_watering: row.next_watering,
+                        date_created: row.date_created,
+                        increment: row.increment,
+                        species: row.species,
+                        desription: row.description,
+                        plant_url: row.plant_url,
+                      });
                       return result;
                     }, {});
                     return resultMap;
