@@ -28,13 +28,13 @@ function checkUser(req, res, next) {
   db("users")
     .where({ username: user.username })
     .then((ret) => {
-      if (ret) {
+      if (ret.length > 0) {
         res.status(400).json({ message: "this user already exists" }).end();
       } else {
         db("users")
           .where({ email: user.email })
           .then((ret) => {
-            if (ret) {
+            if (ret.length > 0) {
               res
                 .status(400)
                 .json({ message: "This email is already registered" })
