@@ -125,7 +125,7 @@ function remove(id) {
           changes.experience = user.experience - 7;
           changes.num_of_plants = user.num_of_plants - 1;
           if (changes.experience < 0) {
-            changes.experience = 0;
+            changes.experience + 100;
             changes.level = user.level - 1;
           }
           return db("users")
