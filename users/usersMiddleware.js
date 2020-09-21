@@ -19,7 +19,7 @@ function verifyForm(req, res, next){
 
     if(changes.username && typeof changes.username !== "string"){
         res.status(400).json({message: "Please use correct type of username"}).end()
-    }else if( chances.email && typeof changes.email !== "string"){
+    }else if( changes.email && typeof changes.email !== "string"){
         res.status(400).json({message: "Please use correct type of email"}).end()
     }else if(changes.phonenumber && typeof changes.phonenumber !== "string"){
         res.status(400).json({message: "Please use correct type of username"}).end()
