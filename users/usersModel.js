@@ -33,7 +33,7 @@ function findById(id) {
 function findByName(user) {
   return db("users").where({ "username": user.username }).first()
   .then(user => {
-    return db("plants").where({"user_id": user.id}).join("users", "users.id", "plants.user_id").select("*")
+    return db("plants").where({"user_id": id}).join("users", "users.id", "plants.user_id").select("*")
     .then(plants => {
         const resultMap = plants.reduce((result, row) => {
             result[row.user_id] = result[row.user_id] || {
@@ -44,9 +44,6 @@ function findByName(user) {
             return result;
           }, {});
           return resultMap;
-    })
-    .catch(err => {
-      return err
     })
   })
   .catch(err => {

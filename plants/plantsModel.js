@@ -16,7 +16,7 @@ function add(id, plant) {
   plant.user_id = id;
   plant.date_created = moment().format("L");
 
-  // plant.last_watered = moment(plant.last_watered, DDMMYYYY).format('L')
+//    plant.last_watered = moment(plant.last_watered, "DDMMYYYY").format('L')
   // plant.next_watering = moment(plant.last_watered, DDMMYYYY).add(plant.increment, 'days').calendar()
 
   return db("plants")

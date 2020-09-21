@@ -59,8 +59,9 @@ server.post("/register", mw.verifyForm, jwt.checkUser, (req, res) => {
 server.post("/login", (req, res) => {
   const user = req.body;
   if (jwt.isValid(user)) {
-    db.findByName(user)
+    db.findByName(user.username)
       .then((ret) => {
+        console.log(ret, 1)
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
           const token = jwt.generateToken(user);
           res.status(200).json({ message: "Welcome", token, user: ret });
@@ -82,7 +83,7 @@ server.post("/login", (req, res) => {
         }
       })
       .catch((err) => {
-        res.status(500).json({ message: "Unknown server error", error: err });
+        res.status(500).json({ message: "Unknown server error", error: err.message });
       });
   } else {
     res
