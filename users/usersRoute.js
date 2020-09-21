@@ -48,7 +48,7 @@ router.post("/:id/plants", pmw.validPlantForm, (req, res) => {
     plants
     .add(req.params.id, req.body)
     .then((user) => {
-      if (user.length>0) {
+      if (user) {
         res.status(200).json(user).end();
       } else {
         res
