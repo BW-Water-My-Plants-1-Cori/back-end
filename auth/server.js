@@ -59,7 +59,7 @@ server.post("/register", mw.verifyForm, jwt.checkUser, (req, res) => {
 server.post("/login", (req, res) => {
   const user = req.body;
   if (jwt.isValid(user)) {
-    db.findByName(user.username)
+    db.findByName(user)
       .then((ret) => {
         console.log(ret, 1)
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
