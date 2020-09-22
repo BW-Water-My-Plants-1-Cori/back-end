@@ -31,9 +31,10 @@ function findById(id) {
           desription: row.description,
           plant_url: row.plant_url,
         });
+
         return result;
       }, {});
-      return resultMap;
+      return Object.values(resultMap);
     }else{
       return db("users").where({id}).first()
     }

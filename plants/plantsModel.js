@@ -58,7 +58,7 @@ function add(id, plant) {
                     });
                     return result;
                   }, {});
-                  return resultMap;
+                  return Object.values(resultMap);;
                 })
                 .catch((err) => {
                   return err;
@@ -133,7 +133,7 @@ function water(id) {
                     });
                     return result;
                   }, {});
-                  return resultMap;
+                  return Object.values(resultMap);;
                 })
                 .catch((err) => {
                   return err;
@@ -194,7 +194,7 @@ function remove(id) {
                       });
                       return result;
                     }, {});
-                    return resultMap;
+                    return Object.values(resultMap);
                   } else {
                     return db("users").where({ id }).first();
                   }

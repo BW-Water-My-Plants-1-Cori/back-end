@@ -9,7 +9,7 @@ const db = require("../users/usersModel");
 const { generateToken } = require("./jwtoken");
 const users = require("../users/usersRoute");
 const plants = require("../plants/plantsRoute");
-const mw = require("../users/usersMiddleware")
+const mw = require("../users/usersMiddleware");
 
 const server = express();
 
@@ -61,24 +61,23 @@ server.post("/login", (req, res) => {
   if (jwt.isValid(user)) {
     db.findByName(user)
       .then((ret) => {
-        console.log(ret)
         if (ret && bcrypt.compareSync(user.password, ret.password)) {
-
           db.findById(ret.id)
-          .then(user => {
-            const token = jwt.generateToken(user);
-            res.status(200).json({ message: "Welcome", token, user: user }).end();
-          })
-          .catch(err => {
-            res.status(500).json({message: "This did not work."}).end()
-          })
-
+            .then((user) => {
+              const token = jwt.generateToken(user);
+              res
+                .status(200)
+                .json({ message: "Welcome", token, user: user[0] })
+                .end();
+            })
+            .catch((err) => {
+              res.status(500).json({ message: "This did not work." }).end();
+            });
         } else if (!ret) {
           res
             .status(404)
             .json({
-              message:
-                "User does not exist. Server may have been reset. Please add a new user and try again. If you just added the user, message me.",
+              message: "User does not exist.",
             })
             .end();
         } else {
@@ -91,7 +90,9 @@ server.post("/login", (req, res) => {
         }
       })
       .catch((err) => {
-        res.status(500).json({ message: "Unknown server error", error: err.message });
+        res
+          .status(500)
+          .json({ message: "Unknown server error", error: err.message });
       });
   } else {
     res
