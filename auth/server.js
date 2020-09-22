@@ -31,7 +31,7 @@ server.post("/register", mw.verifyForm, jwt.checkUser, (req, res) => {
       .then((user) => {
         if (user) {
           const token = generateToken(user);
-          res.status(201).json({ message: "Welcome", user, token }).end();
+          res.status(201).json({ message: "Registered", user, token }).end();
         } else {
           res
             .status(400)
@@ -67,7 +67,7 @@ server.post("/login", (req, res) => {
               const token = jwt.generateToken(user);
               res
                 .status(200)
-                .json({ message: "Welcome", token, user: user[0] })
+                .json({ message: "Welcome", token, user: user})
                 .end();
             })
             .catch((err) => {
