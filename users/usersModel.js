@@ -26,7 +26,7 @@ function findById(id) {
         "u.experience",
         "u.level",
         "u.num_of_plants",
-        "u.id as user_id",
+        "u.id",
         "p.plant_name",
         "p.date_last_watered",
         "p.increment",
