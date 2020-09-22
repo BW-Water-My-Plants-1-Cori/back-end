@@ -110,7 +110,7 @@ function update(id, plant) {
     });
 }
 function water(id) {
-  findById(id)
+  return findById(id)
     // .then((plant) => {
     //   const newThings = plant;
     //   newThings.next_watering = moment(plant.last_watered)
