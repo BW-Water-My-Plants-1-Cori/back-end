@@ -34,7 +34,7 @@ function findById(id) {
 
         return result;
       }, {});
-      return Object.values(resultMap);
+      return Object.values(resultMap)[0];
     }else{
       return db("users").where({id}).first()
     }
