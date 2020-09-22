@@ -211,7 +211,7 @@ function remove(id) {
             .where({ id })
             .update(changes)
             .then((changed) => {
-              return db("plants as p")
+              return db("plants")
                 .where({ user_id: id })
                 .join("users as u", "u.id", "p.user_id")
                 .select(
