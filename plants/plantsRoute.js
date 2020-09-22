@@ -33,7 +33,7 @@ router.put("/:id/water", (req, res)=>{
   db.water(req.params.id)
   .then(ret =>{
     if(ret.length>0){
-      res.status(200).json({message: "Watered", user: ret}).end()
+      res.status(200).json({message: "Watered", user: ret[0]}).end()
     }else{
       res.status(400).json({message: "Plant could not be watered"}).end()
     }
@@ -46,7 +46,7 @@ router.put("/:id/water", (req, res)=>{
 router.delete("/:id", (req, res) => {
         db.remove(req.params.id)
           .then((data) => {
-            res.status(204).json({user: data}).end();
+            res.status(204).json({user: data[0]}).end();
           })
           .catch((err) => {
             res
