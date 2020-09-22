@@ -1,3 +1,5 @@
+const db = require('./plantsModel')
+
 function verifyPlant(req, res, next) {
   db.findById(req.params.id)
     .then((plant) => {

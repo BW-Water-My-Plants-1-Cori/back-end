@@ -88,4 +88,6 @@ function update(user, id) {
     });
 }
 
+
+
 module.exports = { add, findById, findByName, remove, update };

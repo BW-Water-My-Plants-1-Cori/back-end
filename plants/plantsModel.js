@@ -1,4 +1,4 @@
-const db = require("../knexconfig");
+const db = require("../knexconfig")
 const moment = require("moment");
 
 function fetchByUserId(id) {
@@ -8,7 +8,8 @@ function fetchByUserId(id) {
 
 function findById(id) {
   //returns single plant
-  return db("plants").where({ id }).first();
+  console.log("step two")
+  return db("plants").where({id}).first()
 }
 
 function add(id, plant) {
