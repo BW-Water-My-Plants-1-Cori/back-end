@@ -6,6 +6,7 @@ const router = express.Router();
 router.use("/:id", mw.verifyPlant);
 
 router.get("/:id", (req, res) => {
+  console.log("step one")
   db.findById(req.params.id)
     .then((plant) => {
       if (plant) {

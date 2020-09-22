@@ -28,7 +28,7 @@ server.post("/register", mw.verifyForm, jwt.checkUser, (req, res) => {
     const hash = bcrypt.hashSync(user.password, 12);
     user.password = hash;
     db.add(user)
-      .then((user) => {
+    .then((user) => {
         if (user) {
           const token = generateToken(user);
           res.status(201).json({ message: "Registered", user, token }).end();

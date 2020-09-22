@@ -40,12 +40,12 @@ function findById(id) {
       .then((plants) => {
         if (plants.length > 0) {
           const resultMap = plants.reduce((result, row) => {
-            result[row.user_id] = result[row.id] || {
+            result[row.id] = result[row.id] || {
               ...row,
               plants: [],
             };
-            result[row.user_id].plants.push({
-              plant_id: row.plant_id,
+            result[row.id].plants.push({
+              id: row.plant_id,
               plant_name: row.plant_name,
               date_last_watered: row.date_last_watered,
               next_watering: row.next_watering,
@@ -55,7 +55,6 @@ function findById(id) {
               desription: row.description,
               plant_url: row.plant_url,
             });
-
             return result;
           }, {});
           return Object.values(resultMap)[0];
@@ -88,5 +87,7 @@ function update(user, id) {
       return err;
     });
 }
+
+
 
 module.exports = { add, findById, findByName, remove, update };
