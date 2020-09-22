@@ -39,7 +39,26 @@ function add(id, plant) {
               return db("plants")
                 .where({ user_id: id })
                 .join("users", "users.id", "plants.user_id")
-                .select("*")
+                .select(
+                  "u.username",
+                  "u.email",
+                  "u.phonenumber",
+                  "u.first_name",
+                  "u.last_name",
+                  "u.experience",
+                  "u.level",
+                  "u.num_of_plants",
+                  "u.id as user_id",
+                  "p.plant_name",
+                  "p.date_last_watered",
+                  "p.increment",
+                  "p.next_watering",
+                  "p.date_created",
+                  "p.species",
+                  "p.description",
+                  "p.plant_url",
+                  "p.id as plant_id"
+                )
                 .then((plants) => {
                   const resultMap = plants.reduce((result, row) => {
                     result[row.user_id] = result[row.id] || {
@@ -115,7 +134,26 @@ function water(id) {
               return db("plants")
                 .where({ user_id: id })
                 .join("users", "users.id", "plants.user_id")
-                .select("*")
+                .select(
+                  "u.username",
+                  "u.email",
+                  "u.phonenumber",
+                  "u.first_name",
+                  "u.last_name",
+                  "u.experience",
+                  "u.level",
+                  "u.num_of_plants",
+                  "u.id as user_id",
+                  "p.plant_name",
+                  "p.date_last_watered",
+                  "p.increment",
+                  "p.next_watering",
+                  "p.date_created",
+                  "p.species",
+                  "p.description",
+                  "p.plant_url",
+                  "p.id as plant_id"
+                )
                 .then((plants) => {
                   const resultMap = plants.reduce((result, row) => {
                     result[row.user_id] = result[row.id] || {
@@ -176,7 +214,26 @@ function remove(id) {
               return db("plants")
                 .where({ user_id: id })
                 .join("users", "users.id", "plants.user_id")
-                .select("*")
+                .select(
+                  "u.username",
+                  "u.email",
+                  "u.phonenumber",
+                  "u.first_name",
+                  "u.last_name",
+                  "u.experience",
+                  "u.level",
+                  "u.num_of_plants",
+                  "u.id as user_id",
+                  "p.plant_name",
+                  "p.date_last_watered",
+                  "p.increment",
+                  "p.next_watering",
+                  "p.date_created",
+                  "p.species",
+                  "p.description",
+                  "p.plant_url",
+                  "p.id as plant_id"
+                )
                 .then((plants) => {
                   if (plants.length > 0) {
                     const resultMap = plants.reduce((result, row) => {
