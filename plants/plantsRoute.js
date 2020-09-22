@@ -33,6 +33,7 @@ router.put("/:id", mw.validPlantForm, (req, res) => {
 router.put("/:id/water", (req, res)=>{
   db.water(req.params.id)
   .then(ret =>{
+    console.log(ret)
     if(ret){
       res.status(200).json({message: "Watered", user: ret[0]}).end()
     }else{

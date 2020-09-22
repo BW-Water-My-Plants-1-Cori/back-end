@@ -119,8 +119,7 @@ function water(id) {
     //   newThings.last_watered = moment().format("L");
     //   return update(id, newThings)
     .then((plant) => {
-      return users
-        .findById(plant.user_id)
+      return db("users").where({id: plant.user_id}).first()
         .then((user) => {
           const changes = user;
           changes.experience = user.experience + 15;
@@ -129,9 +128,10 @@ function water(id) {
             changes.level = user.level + 1;
           }
           return db("users")
-            .where({ id })
+            .where({ id: plant.user_id })
             .update(changes)
             .then((changed) => {
+              console.log("3")
               return db("plants as p")
                 .where({ user_id: id })
                 .join("users as u", "u.id", "p.user_id")
@@ -156,6 +156,7 @@ function water(id) {
                   "p.id as plant_id"
                 )
                 .then((plants) => {
+                  console.log("4")
                   const resultMap = plants.reduce((result, row) => {
                     result[row.user_id] = result[row.id] || {
                       ...row,
@@ -174,7 +175,7 @@ function water(id) {
                     });
                     return result;
                   }, {});
-                  return Object.values(resultMap);;
+                  return Object.values(resultMap);
                 })
                 .catch((err) => {
                   return err;
@@ -212,7 +213,7 @@ function remove(id) {
             .where({ id })
             .update(changes)
             .then((changed) => {
-              return db("plants")
+              return db("plants as p")
                 .where({ user_id: id })
                 .join("users as u", "u.id", "p.user_id")
                 .select(
