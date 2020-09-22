@@ -36,9 +36,9 @@ function add(id, plant) {
             .where({ id })
             .update(changes)
             .then((changed) => {
-              return db("plants")
+              return db("plants as p")
                 .where({ user_id: id })
-                .join("users", "users.id", "plants.user_id")
+                .join("users as u", "u.id", "p.user_id")
                 .select(
                   "u.username",
                   "u.email",
@@ -48,7 +48,7 @@ function add(id, plant) {
                   "u.experience",
                   "u.level",
                   "u.num_of_plants",
-                  "u.id",
+                  "u.id as id",
                   "p.plant_name",
                   "p.date_last_watered",
                   "p.increment",
@@ -61,12 +61,12 @@ function add(id, plant) {
                 )
                 .then((plants) => {
                   const resultMap = plants.reduce((result, row) => {
-                    result[row.user_id] = result[row.id] || {
+                    result[row.id] = result[row.id] || {
                       ...row,
                       plants: [],
                     };
-                    result[row.user_id].plants.push({
-                      id: row.id,
+                    result[row.id].plants.push({
+                      id: row.plant_id,
                       plant_name: row.plant_name,
                       date_last_watered: row.date_last_watered,
                       next_watering: row.next_watering,
@@ -78,7 +78,7 @@ function add(id, plant) {
                     });
                     return result;
                   }, {});
-                  return Object.values(resultMap);;
+                  return Object.values(resultMap)[0];
                 })
                 .catch((err) => {
                   return err;
@@ -131,9 +131,9 @@ function water(id) {
             .where({ id })
             .update(changes)
             .then((changed) => {
-              return db("plants")
+              return db("plants as p")
                 .where({ user_id: id })
-                .join("users", "users.id", "plants.user_id")
+                .join("users as u", "u.id", "p.user_id")
                 .select(
                   "u.username",
                   "u.email",
@@ -211,9 +211,9 @@ function remove(id) {
             .where({ id })
             .update(changes)
             .then((changed) => {
-              return db("plants")
+              return db("plants as p")
                 .where({ user_id: id })
-                .join("users", "users.id", "plants.user_id")
+                .join("users as u", "u.id", "p.user_id")
                 .select(
                   "u.username",
                   "u.email",
@@ -232,7 +232,8 @@ function remove(id) {
                   "p.species",
                   "p.description",
                   "p.plant_url",
-                  "p.id as plant_id"
+                  "p.id as plant_id",
+                  "p.user_id"
                 )
                 .then((plants) => {
                   if (plants.length > 0) {
