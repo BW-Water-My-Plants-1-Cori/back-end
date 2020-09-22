@@ -3,7 +3,7 @@ const moment = require("moment");
 
 function fetchByUserId(id) {
   //returns all plants for user
-  return db("plants").where({ user_id: id }).orderBy("next_watering");
+  return db("plants").where({ user_id: id });
 }
 
 function findById(id) {

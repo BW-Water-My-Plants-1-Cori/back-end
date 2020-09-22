@@ -33,7 +33,7 @@ router.get("/:id/plants", (req, res) => {
     .fetchByUserId(req.params.id)
     .then((plants) => {
       if (plants) {
-        res.status(200).json(plant).end();
+        res.status(200).json(plants).end();
       } else {
         res.status(404).json({ message: "THIS USER HAS NO PLANTS" }).end();
       }
