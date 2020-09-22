@@ -47,7 +47,7 @@ function add(id, plant) {
                       plants: [],
                     };
                     result[row.user_id].plants.push({
-                      id: plant.id,
+                      id: row.id,
                       plant_name: row.plant_name,
                       date_last_watered: row.date_last_watered,
                       next_watering: row.next_watering,
@@ -123,7 +123,7 @@ function water(id) {
                       plants: [],
                     };
                     result[row.user_id].plants.push({
-                      id: plant.id,
+                      id: row.id,
                       plant_name: row.plant_name,
                       date_last_watered: row.date_last_watered,
                       next_watering: row.next_watering,
@@ -185,7 +185,7 @@ function remove(id) {
                         plants: [],
                       };
                       result[row.user_id].plants.push({
-                        id: plant.id,
+                        id: row.id,
                         plant_name: row.plant_name,
                         date_last_watered: row.date_last_watered,
                         next_watering: row.next_watering,
