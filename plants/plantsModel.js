@@ -8,7 +8,6 @@ function fetchByUserId(id) {
 
 function findById(id) {
   //returns single plant
-  console.log("step two")
   return db("plants").where({id}).first()
 }
 
@@ -111,15 +110,12 @@ function update(id, plant) {
 }
 function water(id) {
   return findById(id)
-    // .then((plant) => {
-    //   const newThings = plant;
-    //   newThings.next_watering = moment(plant.last_watered)
-    //     .add(plant.increment, "days")
-    //     .calendar();
-    //   newThings.last_watered = moment().format("L");
-    //   return update(id, newThings)
+  .then(plant => {
+    plant.date_last_watered = moment().format("L")
+    return update(id, plant)
     .then((plant) => {
-      return db("users").where({id: plant.user_id}).first()
+      const id = plant.user_id
+      return db("users").where({id}).first()
         .then((user) => {
           const changes = user;
           changes.experience = user.experience + 15;
@@ -131,7 +127,6 @@ function water(id) {
             .where({ id: plant.user_id })
             .update(changes)
             .then((changed) => {
-              console.log("3")
               return db("plants as p")
                 .where({ user_id: id })
                 .join("users as u", "u.id", "p.user_id")
@@ -156,7 +151,6 @@ function water(id) {
                   "p.id as plant_id"
                 )
                 .then((plants) => {
-                  console.log("4")
                   const resultMap = plants.reduce((result, row) => {
                     result[row.user_id] = result[row.id] || {
                       ...row,
@@ -177,6 +171,15 @@ function water(id) {
                   }, {});
                   return Object.values(resultMap);
                 })
+  })
+    // .then((plant) => {
+    //   const newThings = plant;
+    //   newThings.next_watering = moment(plant.last_watered)
+    //     .add(plant.increment, "days")
+    //     .calendar();
+    //   newThings.last_watered = moment().format("L");
+    //   return update(id, newThings)
+    
                 .catch((err) => {
                   return err;
                 });
@@ -191,7 +194,8 @@ function water(id) {
     })
     .catch((err) => {
       return err;
-    });
+    })
+    .catch(err => {return err});
 }
 
 function remove(id) {
