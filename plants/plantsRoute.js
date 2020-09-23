@@ -48,9 +48,11 @@ router.put("/:id/water", (req, res)=>{
 router.delete("/:id", (req, res) => {
         db.remove(req.params.id)
           .then((data) => {
-            res.status(204).json({user: data[0]}).end();
+            console.log(data, "HELLO")
+            res.status(200).json({message: "success", user: data}).end();
           })
           .catch((err) => {
+            console.log(err, "I AM FAIL")
             res
               .status(500)
               .json({ message: "Anne Error!", error: err.message })
