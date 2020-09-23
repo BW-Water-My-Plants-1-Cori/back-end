@@ -1,9 +1,11 @@
 package com.lambdaschool.wmpbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.domain.AuditorAware;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,6 +39,11 @@ public class Plant extends Auditable
     
     @Column(nullable = false)
     private String datecreated;
+    
+    @OneToMany(mappedBy = "plants", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = "plants",
+    allowSetters = true)
+    private Set<UserPlants> userPlants = new HashSet<>();
     
     public Plant()
     {
@@ -149,5 +156,15 @@ public class Plant extends Auditable
     public void setDatecreated(String datecreated)
     {
         this.datecreated = datecreated;
+    }
+    
+    public Set<UserPlants> getUserPlants()
+    {
+        return userPlants;
+    }
+    
+    public void setUserPlants(Set<UserPlants> userPlants)
+    {
+        this.userPlants = userPlants;
     }
 }

@@ -1,6 +1,8 @@
 package com.lambdaschool.wmpbackend.controllers;
 
+import com.lambdaschool.wmpbackend.models.Plant;
 import com.lambdaschool.wmpbackend.models.User;
+import com.lambdaschool.wmpbackend.services.PlantService;
 import com.lambdaschool.wmpbackend.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,18 @@ public class UserController
      */
     @Autowired
     private UserService userService;
-
+    
+    @Autowired
+    private PlantService plantService;
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(value = "/user/plants", produces = "application/json")
+    public ResponseEntity<?> listAllPlants()
+    {
+        List<Plant> myPlants = plantService.findAll();
+        return new ResponseEntity<>(myPlants, HttpStatus.OK);
+    }
+    
     /**
      * Returns a list of all users
      * <br>Example: <a href="http://localhost:2019/users/users">http://localhost:2019/users/users</a>
