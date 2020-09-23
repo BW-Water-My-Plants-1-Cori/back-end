@@ -15,7 +15,7 @@ function verifyPlant(req, res, next) {
 }
 
 function isValid(plant){
-    return Boolean(plant.plant_name && typeof plant.plant_name === "string" && plant.date_last_watered && typeof plant.date_last_watered === "string" && plant.increment && typeof plant.increment === "number");
+    return Boolean(plant.plant_name && typeof plant.plant_name === "string" && plant.date_last_watered && typeof plant.date_last_watered === "string");
   }
 
 function validPlantForm(req, res, next){
