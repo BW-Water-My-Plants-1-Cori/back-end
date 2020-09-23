@@ -24,14 +24,15 @@ function validPlantForm(req, res, next){
         res.status(400).json({message: "Please use correct type"}).end()
     }else if(plant.date_last_watered &&typeof plant.date_last_watered !== "string"){
         res.status(400).json({message: "Please use correct type"}).end()
-    }else if(plant.increment &&typeof plant.increment !== "number"){
-        res.status(400).json({message: "Please use correct type"}).end()
     }else if(plant.species && typeof plant.species !== "string"){
         res.status(400).json({message: "Please use correct type"}).end()
     }else if(plant.description && typeof plant.description !== "string"){
         res.status(400).json({message: "Please use correct type"}).end()
     }else if(plant.plant_url && typeof plant.plant_url !== "string"){
         res.status(400).json({message: "Please use correct type"}).end()
+      }else if(plant.increment &&typeof plant.increment !== "number"){
+        Number(plant.increment)
+        next()
     }else{
         next()
     }
