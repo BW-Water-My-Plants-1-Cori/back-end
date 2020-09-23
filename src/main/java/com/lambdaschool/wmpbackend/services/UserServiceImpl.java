@@ -3,8 +3,8 @@ package com.lambdaschool.wmpbackend.services;
 import com.lambdaschool.wmpbackend.exceptions.ResourceNotFoundException;
 import com.lambdaschool.wmpbackend.models.Role;
 import com.lambdaschool.wmpbackend.models.User;
+import com.lambdaschool.wmpbackend.models.UserPlants;
 import com.lambdaschool.wmpbackend.models.UserRoles;
-import com.lambdaschool.wmpbackend.models.Useremail;
 import com.lambdaschool.wmpbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,9 +98,15 @@ public class UserServiceImpl
 
         newUser.setUsername(user.getUsername()
             .toLowerCase());
-        newUser.setPasswordNoEncrypt(user.getPassword());
+        newUser.setPhonenumber(user.getPhonenumber());
         newUser.setPrimaryemail(user.getPrimaryemail()
-            .toLowerCase());
+                .toLowerCase());
+        newUser.setPasswordNoEncrypt(user.getPassword());
+        newUser.setFirstname(user.getFirstname());
+        newUser.setLastname(user.getLastname());
+        newUser.setExperience(user.getExperience());
+        newUser.setLevel(user.getLevel());
+        newUser.setNumofplants(user.getNumofplants());
 
         newUser.getRoles()
             .clear();
@@ -113,14 +119,19 @@ public class UserServiceImpl
                     addRole));
         }
 
-        newUser.getUseremails()
-            .clear();
-        for (Useremail ue : user.getUseremails())
+        newUser.getPlants().clear();
+        for(UserPlants up: user.getPlants())
         {
-            newUser.getUseremails()
-                .add(new Useremail(newUser,
-                    ue.getUseremail()));
+            newUser.getPlants().add(new UserPlants(newUser,up.getPlants()));
         }
+//        newUser.getUseremails()
+//            .clear();
+//        for (Plant ue : user.getUseremails())
+//        {
+//            newUser.getUseremails()
+//                .add(new Plant(newUser,
+//                    ue.getUseremail()));
+//        }
 
         return userrepos.save(newUser);
     }
@@ -168,18 +179,18 @@ public class UserServiceImpl
                 }
             }
 
-            if (user.getUseremails()
-                .size() > 0)
-            {
-                currentUser.getUseremails()
-                    .clear();
-                for (Useremail ue : user.getUseremails())
-                {
-                    currentUser.getUseremails()
-                        .add(new Useremail(currentUser,
-                            ue.getUseremail()));
-                }
-            }
+//            if (user.getUseremails()
+//                .size() > 0)
+//            {
+//                currentUser.getUseremails()
+//                    .clear();
+//                for (Plant ue : user.getUseremails())
+//                {
+//                    currentUser.getUseremails()
+//                        .add(new Plant(currentUser,
+//                            ue.getUseremail()));
+//                }
+//            }
 
             return userrepos.save(currentUser);
         } else

@@ -34,14 +34,14 @@ public class User
     @Column(nullable = false,
             unique = true)
     private String username;
-
+    
     /**
-     * The password (String) for this user. Cannot be null. Never get displayed
+     * The phonenumber (String) can be null but must be unique
      */
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
+    @Column(nullable = true,
+            unique = true)
+    private String phonenumber;
+    
     /**
      * Primary email account of user. Could be used as the userid. Cannot be null and must be unique.
      */
@@ -49,15 +49,39 @@ public class User
             unique = true)
     @Email
     private String primaryemail;
-
+    
     /**
-     * A list of emails for this user
+     * The password (String) for this user. Cannot be null. Never get displayed
      */
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
-    private List<Useremail> useremails = new ArrayList<>();
+    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    
+    @Column(nullable = true,
+            unique = true)
+    private String firstname;
+    
+    @Column(nullable = true,
+            unique = true)
+    private String lastname;
+    
+    @Column(nullable = true)
+    private int experience;
+    
+    @Column(nullable = true)
+    private int level;
+    
+    @Column(nullable = true)
+    private int numofplants;
+    
+//    /**
+//     * A list of emails for this user
+//     */
+//    @OneToMany(mappedBy = "user",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    @JsonIgnoreProperties(value = "user", allowSetters = true)
+//    private List<Plant> useremails = new ArrayList<>();
 
     /**
      * Part of the join relationship between user and role
@@ -68,6 +92,12 @@ public class User
             orphanRemoval = true)
     @JsonIgnoreProperties(value = "user", allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
+    
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "user",
+            allowSetters = true)
+    private Set<UserPlants> plants = new HashSet<>();
 
     /**
      * Default constructor used primarily by the JPA.
@@ -85,16 +115,29 @@ public class User
      * @param password     The password (String) of the user
      * @param primaryemail The primary email (String) of the user
      */
-    public User(
-            String username,
-            String password,
-            String primaryemail)
+    public User(String username,
+                String phonenumber,
+                @Email String primaryemail,
+                String password,
+                String firstname,
+                String lastname,
+                int experience,
+                int level,
+                int numofplants)
     {
         setUsername(username);
-        setPassword(password);
+        this.phonenumber = phonenumber;
         this.primaryemail = primaryemail;
+        setPassword(password);
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.experience = experience;
+        this.level = level;
+        this.numofplants = numofplants;
+        this.roles = roles;
+        this.plants = plants;
     }
-
+    
     /**
      * Getter for userid
      *
@@ -187,22 +230,22 @@ public class User
     /**
      * Getter for the list of useremails for this user
      *
-     * @return the list of useremails (List(Useremail)) for this user
+     * @return the list of useremails (List(Plant)) for this user
      */
-    public List<Useremail> getUseremails()
-    {
-        return useremails;
-    }
+//    public List<Plant> getUseremails()
+//    {
+//        return useremails;
+//    }
 
     /**
      * Setter for list of useremails for this user
      *
-     * @param useremails the new list of useremails (List(Useremail)) for this user
+     * @param useremails the new list of useremails (List(Plant)) for this user
      */
-    public void setUseremails(List<Useremail> useremails)
-    {
-        this.useremails = useremails;
-    }
+//    public void setUseremails(List<Plant> useremails)
+//    {
+//        this.useremails = useremails;
+//    }
 
     /**
      * Getter for user role combinations
@@ -223,7 +266,78 @@ public class User
     {
         this.roles = roles;
     }
-
+    
+    public String getPhonenumber()
+    {
+        return phonenumber;
+    }
+    
+    public void setPhonenumber(String phonenumber)
+    {
+        this.phonenumber = phonenumber;
+    }
+    
+    public String getFirstname()
+    {
+        return firstname;
+    }
+    
+    public void setFirstname(String firstname)
+    {
+        this.firstname = firstname;
+    }
+    
+    public String getLastname()
+    {
+        return lastname;
+    }
+    
+    public void setLastname(String lastname)
+    {
+        this.lastname = lastname;
+    }
+    
+    public int getExperience()
+    {
+        return experience;
+    }
+    
+    public void setExperience(int experience)
+    {
+        this.experience = experience;
+    }
+    
+    public int getLevel()
+    {
+        return level;
+    }
+    
+    public void setLevel(int level)
+    {
+        this.level = level;
+    }
+    
+    public int getNumofplants()
+    {
+        return numofplants;
+    }
+    
+    public void setNumofplants(int numofplants)
+    {
+        this.numofplants = numofplants;
+    }
+    
+    
+    public Set<UserPlants> getPlants()
+    {
+        return plants;
+    }
+    
+    public void setPlants(Set<UserPlants> plants)
+    {
+        this.plants = plants;
+    }
+    
     /**
      * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!

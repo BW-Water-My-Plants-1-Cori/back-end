@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambdaschool.wmpbackend.models.Role;
 import com.lambdaschool.wmpbackend.models.User;
 import com.lambdaschool.wmpbackend.models.UserRoles;
-import com.lambdaschool.wmpbackend.models.Useremail;
 import com.lambdaschool.wmpbackend.services.UserService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.After;
@@ -68,77 +67,23 @@ public class UserControllerUnitTest
         r3.setRoleid(3);
 
         // admin, data, user
-        User u1 = new User("admin", "ILuvM4th!", "admin@lambdaschool.local");
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
-        u1.getRoles().add(new UserRoles(u1, r3));
-
-        u1.getUseremails()
-                .add(new Useremail(u1, "admin@email.local"));
-        u1.getUseremails()
-                .get(0)
-                .setUseremailid(10);
-
-        u1.getUseremails()
-                .add(new Useremail(u1, "admin@mymail.local"));
-        u1.getUseremails()
-                .get(1)
-                .setUseremailid(11);
-
-        u1.setUserid(101);
+        User u1 = new User("admin",
+                "1234567890",
+                "admin@lambdaschool.local",
+                "password",
+                "User",
+                "One",
+                1,
+                1,
+                3);
+        u1.getRoles()
+                .add(new UserRoles(u1, r1));
+        u1.getRoles()
+                .add(new UserRoles(u1, r2));
+        u1.getRoles()
+                .add(new UserRoles(u1, r3));
+    
         userList.add(u1);
-
-        // data, user
-        ArrayList<UserRoles> datas = new ArrayList<>();
-        User u2 = new User("cinnamon", "1234567", "cinnamon@lambdaschool.local");
-        u1.getRoles().add(new UserRoles(u2, r2));
-        u1.getRoles().add(new UserRoles(u2, r3));
-
-        u2.getUseremails()
-                .add(new Useremail(u2, "cinnamon@mymail.local"));
-        u2.getUseremails()
-                .get(0)
-                .setUseremailid(20);
-
-        u2.getUseremails()
-                .add(new Useremail(u2, "hops@mymail.local"));
-        u2.getUseremails()
-                .get(1)
-                .setUseremailid(21);
-
-        u2.getUseremails()
-                .add(new Useremail(u2, "bunny@email.local"));
-        u2.getUseremails()
-                .get(2)
-                .setUseremailid(22);
-
-        u2.setUserid(102);
-        userList.add(u2);
-
-        // user
-        User u3 = new User("testingbarn", "ILuvM4th!", "testingbarn@school.lambda");
-        u3.getRoles().add(new UserRoles(u3, r1));
-
-        u3.getUseremails()
-                .add(new Useremail(u3, "barnbarn@email.local"));
-        u3.getUseremails()
-                .get(0)
-                .setUseremailid(30);
-
-        u3.setUserid(103);
-        userList.add(u3);
-
-        User u4 = new User("testingcat", "password", "testingcat@school.lambda");
-        u4.getRoles().add(new UserRoles(u4, r2));
-
-        u4.setUserid(104);
-        userList.add(u4);
-
-        User u5 = new User("testingdog", "password", "testingdog@school.lambda");
-        u4.getRoles().add(new UserRoles(u5, r2));
-
-        u5.setUserid(105);
-        userList.add(u5);
 
         System.out.println("\n*** Seed Data ***");
         for (User u : userList)

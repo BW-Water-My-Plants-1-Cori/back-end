@@ -144,7 +144,7 @@ public class UserController
     /**
      * Given a complete User Object
      * Given the user id, primary key, is in the User table,
-     * replace the User record and Useremail records.
+     * replace the User record and Plant records.
      * Roles are handled through different endpoints
      * <br> Example: <a href="http://localhost:2019/users/user/15">http://localhost:2019/users/user/15</a>
      *

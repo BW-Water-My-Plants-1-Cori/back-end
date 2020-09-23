@@ -5,7 +5,6 @@ import com.lambdaschool.wmpbackend.exceptions.ResourceNotFoundException;
 import com.lambdaschool.wmpbackend.models.Role;
 import com.lambdaschool.wmpbackend.models.User;
 import com.lambdaschool.wmpbackend.models.UserRoles;
-import com.lambdaschool.wmpbackend.models.Useremail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -18,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -105,23 +102,32 @@ public class UserServiceImplTest
     @Test
     public void F_save()
     {
+        Role r1 = new Role("admin");
         Role r2 = new Role("user");
-        r2.setRoleid(2);
-        
-        User u2 = new User("tiger", "ILuvMath!", "tiger@school.lambda");
-        u2.getRoles().add(new UserRoles(u2, r2));
-        u2.getUseremails()
-                .add(new Useremail(u2, "tiger@tiger.local"));
-        
-        User saveU2 = userService.save(u2);
+        Role r3 = new Role("data");
+    
+        User u1 = new User("admin",
+                "1234567890",
+                "admin@lambdaschool.local",
+                "password",
+                "User",
+                "One",
+                1,
+                1,
+                3);
+        u1.getRoles()
+                .add(new UserRoles(u1, r1));
+        u1.getRoles()
+                .add(new UserRoles(u1, r2));
+        u1.getRoles()
+                .add(new UserRoles(u1, r3));
+
+        User saveU1 = userService.save(u1);
         
         System.out.println("*** DATA ***");
-        System.out.println(saveU2);
+        System.out.println(saveU1);
         System.out.println("*** DATA ***");
-        
-        assertEquals("tiger@tiger.local", saveU2.getUseremails()
-                .get(0)
-                .getUseremail());
+
     }
     
     @Transactional
@@ -129,30 +135,36 @@ public class UserServiceImplTest
     @Test
     public void G_update()
     {
+        Role r1 = new Role("admin");
         Role r2 = new Role("user");
+        Role r3 = new Role("data");
+    
         r2.setRoleid(2);
-        
-        User u2 = new User("cinnamon", "password", "cinnamon@school.lambda");
-        u2.getRoles().add(new UserRoles(u2, r2));
-        
-        u2.getUseremails()
-                .add(new Useremail(u2, "cinnamon@mymail.thump"));
-        u2.getUseremails()
-                .add(new Useremail(u2, "hops@mymail.thump"));
-        u2.getUseremails()
-                .add(new Useremail(u2, "bunny@email.thump"));
-        
-        User updatedu2 = userService.update(u2, 7);
+    
+        User u1 = new User("admin",
+                "1234567890",
+                "admin@lambdaschool.local",
+                "password",
+                "User",
+                "One",
+                1,
+                1,
+                3);
+        u1.getRoles()
+                .add(new UserRoles(u1, r1));
+        u1.getRoles()
+                .add(new UserRoles(u1, r2));
+        u1.getRoles()
+                .add(new UserRoles(u1, r3));
+    
+    
+        User updatedu1 = userService.update(u1, 7);
         
         System.out.println("*** DATA ***");
-        System.out.println(updatedu2);
+        System.out.println(updatedu1);
         System.out.println("*** DATA ***");
         
-        int checking = updatedu2.getUseremails()
-                .size() - 1;
-        assertEquals("bunny@email.thump", updatedu2.getUseremails()
-                .get(checking)
-                .getUseremail());
+
     }
     
     @Transactional
@@ -160,28 +172,26 @@ public class UserServiceImplTest
     @Test(expected = ResourceNotFoundException.class)
     public void GB_updateNotCurrentUserNorAdmin()
     {
+        Role r1 = new Role("admin");
         Role r2 = new Role("user");
-        r2.setRoleid(2);
-        
-        User u2 = new User("cinnamon", "password", "cinnamon@school.lambda");
-        u2.getRoles().add(new UserRoles(u2, r2));
-        u2.getUseremails()
-                .add(new Useremail(u2, "cinnamon@mymail.thump"));
-        u2.getUseremails()
-                .add(new Useremail(u2, "hops@mymail.thump"));
-        u2.getUseremails()
-                .add(new Useremail(u2, "bunny@email.thump"));
-        
-        User updatedu2 = userService.update(u2, 8);
-        
-        System.out.println("*** DATA ***");
-        System.out.println(updatedu2);
-        System.out.println("*** DATA ***");
-        
-        int checking = updatedu2.getUseremails()
-                .size() - 1;
-        assertEquals("bunny@email.thump", updatedu2.getUseremails()
-                .get(checking)
-                .getUseremail());
+        Role r3 = new Role("data");
+    
+        // admin, data, user
+        User u1 = new User("admin",
+                "1234567890",
+                "admin@lambdaschool.local",
+                "password",
+                "User",
+                "One",
+                1,
+                1,
+                3);
+        u1.getRoles()
+                .add(new UserRoles(u1, r1));
+        u1.getRoles()
+                .add(new UserRoles(u1, r2));
+        u1.getRoles()
+                .add(new UserRoles(u1, r3));
+    
     }
 }
