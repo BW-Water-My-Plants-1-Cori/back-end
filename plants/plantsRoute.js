@@ -52,7 +52,6 @@ router.delete("/:id", (req, res) => {
             res.status(200).json({message: "success", user: data}).end();
           })
           .catch((err) => {
-            console.log(err, "I AM FAIL")
             res
               .status(500)
               .json({ message: "Anne Error!", error: err.message })
