@@ -57,12 +57,10 @@ public class User
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
-    @Column(nullable = true,
-            unique = true)
+    @Column(nullable = true)
     private String firstname;
     
-    @Column(nullable = true,
-            unique = true)
+    @Column(nullable = true)
     private String lastname;
     
     @Column(nullable = true)
@@ -98,6 +96,8 @@ public class User
     @JsonIgnoreProperties(value = "user",
             allowSetters = true)
     private Set<UserPlants> plants = new HashSet<>();
+    
+    
 
     /**
      * Default constructor used primarily by the JPA.

@@ -3,9 +3,8 @@ package com.lambdaschool.wmpbackend;
 //import com.github.javafaker.Faker;
 //import com.github.javafaker.service.FakeValuesService;
 //import com.github.javafaker.service.RandomService;
-import com.lambdaschool.wmpbackend.models.Role;
-import com.lambdaschool.wmpbackend.models.User;
-import com.lambdaschool.wmpbackend.models.UserRoles;
+import com.lambdaschool.wmpbackend.models.*;
+import com.lambdaschool.wmpbackend.services.PlantService;
 import com.lambdaschool.wmpbackend.services.RoleService;
 import com.lambdaschool.wmpbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,9 @@ public class SeedData
      */
     @Autowired
     UserService userService;
+    
+    @Autowired
+    PlantService plantService;
 
     /**
      * Generates test, seed data for our application
@@ -55,30 +57,79 @@ public class SeedData
         Role r1 = new Role("admin");
         Role r2 = new Role("user");
         Role r3 = new Role("data");
-
+    
         r1 = roleService.save(r1);
         r2 = roleService.save(r2);
         r3 = roleService.save(r3);
-
+    
+        Plant p1 = new Plant("Danny",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
+    
+        Plant p2 = new Plant("Plant2",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
+        Plant p3 = new Plant("Plant3",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
+        Plant p4 = new Plant("Plant4",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
+    
+        p1 = plantService.save(p1);
+        p2 = plantService.save(p2);
+        p3 = plantService.save(p3);
+        p4 = plantService.save(p4);
+    
         // admin, data, user
         User u1 = new User("admin",
                 "1234567890",
                 "admin@lambdaschool.local",
                 "password",
-                "User",
-                "One",
+                "Useradmin",
+                "Adminuser",
                 1,
                 1,
                 3);
-        u1.getRoles()
-                .add(new UserRoles(u1, r1));
-        u1.getRoles()
-                .add(new UserRoles(u1, r2));
-        u1.getRoles()
-                .add(new UserRoles(u1, r3));
+        u1.getRoles().add(new UserRoles(u1, r1));
+        u1.getPlants().add(new UserPlants(u1, p1));
+        u1.getPlants().add(new UserPlants(u1, p2));
+    
+        User u2 = new User("user",
+                "0987654321",
+                "user@lambdaschool.local",
+                "password",
+                "User",
+                "Adminuser",
+                1,
+                1,
+                3);
+        u2.getRoles().add(new UserRoles(u2, r2));
+        u2.getPlants().add(new UserPlants(u2, p3));
+        u2.getPlants().add(new UserPlants(u2, p4));
     
         userService.save(u1);
-        
+        userService.save(u2);
 
 //        if (false)
 //        {

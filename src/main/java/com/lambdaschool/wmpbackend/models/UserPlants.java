@@ -1,6 +1,7 @@
 package com.lambdaschool.wmpbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @IdClass(UserPlantsId.class)
 public class UserPlants extends Auditable implements Serializable
 {
+    
     
     @Id
     @ManyToOne

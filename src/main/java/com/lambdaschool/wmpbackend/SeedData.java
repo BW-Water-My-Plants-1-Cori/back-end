@@ -80,9 +80,27 @@ public class SeedData
                 "Human",
                 "github.com/dhoesle",
                 "19961030");
+        Plant p3 = new Plant("Plant3",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
+        Plant p4 = new Plant("Plant4",
+                "6ft 2in brown hair with brown eyes",
+                "2020922",
+                3,
+                "2020923",
+                "Human",
+                "github.com/dhoesle",
+                "19961030");
         
         p1 = plantService.save(p1);
         p2 = plantService.save(p2);
+        p3 = plantService.save(p3);
+        p4 = plantService.save(p4);
         
         // admin, data, user
         User u1 = new User("admin",
@@ -94,15 +112,25 @@ public class SeedData
                             1,
                             1,
                             3);
-        u1.getRoles()
-                .add(new UserRoles(u1, r1));
+        u1.getRoles().add(new UserRoles(u1, r1));
         u1.getPlants().add(new UserPlants(u1, p1));
         u1.getPlants().add(new UserPlants(u1, p2));
     
-    
-    
-    
+        User u2 = new User("user",
+                "0987654321",
+                "user@lambdaschool.local",
+                "password",
+                "User",
+                "Adminuser",
+                1,
+                1,
+                3);
+        u2.getRoles().add(new UserRoles(u2, r2));
+        u2.getPlants().add(new UserPlants(u2, p3));
+        u2.getPlants().add(new UserPlants(u2, p4));
+
         userService.save(u1);
+        userService.save(u2);
     
 
 

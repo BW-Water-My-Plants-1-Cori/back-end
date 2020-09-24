@@ -151,33 +151,54 @@ public class UserServiceImpl
                 currentUser.setUsername(user.getUsername()
                     .toLowerCase());
             }
-
-            if (user.getPassword() != null)
+            if (user.getPhonenumber() != null)
             {
-                currentUser.setPasswordNoEncrypt(user.getPassword());
+                currentUser.setPhonenumber(user.getPhonenumber());
             }
-
             if (user.getPrimaryemail() != null)
             {
                 currentUser.setPrimaryemail(user.getPrimaryemail()
                     .toLowerCase());
             }
-
-            if (user.getRoles()
-                .size() > 0)
+            if (user.getPassword() != null)
             {
-                currentUser.getRoles()
-                    .clear();
-                for (UserRoles ur : user.getRoles())
-                {
-                    Role addRole = roleService.findRoleById(ur.getRole()
-                        .getRoleid());
-
-                    currentUser.getRoles()
-                        .add(new UserRoles(currentUser,
-                            addRole));
-                }
+                currentUser.setPasswordNoEncrypt(user.getPassword());
             }
+            if (user.getFirstname() != null)
+            {
+                currentUser.setFirstname(user.getFirstname());
+            }
+            if (user.getLastname() != null)
+            {
+                currentUser.setLastname(user.getLastname());
+            }
+            if (user.getExperience() != 0)
+            {
+                currentUser.setExperience(user.getExperience());
+            }
+            if (user.getLevel() != 0)
+            {
+                currentUser.setLevel(user.getLevel());
+            }
+            if (user.getNumofplants() != 0)
+            {
+                currentUser.setNumofplants(user.getNumofplants());
+            }
+//            if (user.getRoles()
+//                .size() > 0)
+//            {
+//                currentUser.getRoles()
+//                    .clear();
+//                for (UserRoles ur : user.getRoles())
+//                {
+//                    Role addRole = roleService.findRoleById(ur.getRole()
+//                        .getRoleid());
+//
+//                    currentUser.getRoles()
+//                        .add(new UserRoles(currentUser,
+//                            addRole));
+//                }
+//            }
 
 //            if (user.getUseremails()
 //                .size() > 0)

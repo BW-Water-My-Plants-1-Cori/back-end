@@ -2,6 +2,7 @@ package com.lambdaschool.wmpbackend.controllers;
 
 import com.lambdaschool.wmpbackend.models.Plant;
 import com.lambdaschool.wmpbackend.models.User;
+import com.lambdaschool.wmpbackend.models.UserPlants;
 import com.lambdaschool.wmpbackend.services.PlantService;
 import com.lambdaschool.wmpbackend.services.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The entry point for clients to access user data
@@ -36,7 +38,7 @@ public class UserController
     private PlantService plantService;
     
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping(value = "/user/plants", produces = "application/json")
+    @GetMapping(value = "/plants", produces = "application/json")
     public ResponseEntity<?> listAllPlants()
     {
         List<Plant> myPlants = plantService.findAll();
@@ -68,7 +70,6 @@ public class UserController
      * @return JSON object of the user you seek
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/{userId}",
             produces = "application/json")
     public ResponseEntity<?> getUserById(
@@ -79,7 +80,13 @@ public class UserController
         return new ResponseEntity<>(u,
                                     HttpStatus.OK);
     }
-
+    
+    @GetMapping(value = "/{userId}/plants", produces = "application/json")
+    public ResponseEntity<?> getUserPlantsById(@PathVariable Long userId)
+    {
+        List<Plant> u = plantService.findAll();
+        return new ResponseEntity<>(u, HttpStatus.OK);
+    }
     /**
      * Return a user object based on a given username
      * <br>Example: <a href="http://localhost:2019/users/user/name/cinnamon">http://localhost:2019/users/user/name/cinnamon</a>
