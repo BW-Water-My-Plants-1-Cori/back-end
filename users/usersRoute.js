@@ -74,7 +74,7 @@ router.put("/:id", mw.verifyForm, (req, res) => {
   }
   db.update(changes, req.params.id)
     .then((user) => {
-      if (user.length>0) {
+      if (user) {
         res.status(200).json(user).end();
       } else {
         res.status(400).json({ message: "There was a problem." }).end();
