@@ -125,7 +125,7 @@ plant.next_watering = updated
               const changes = user;
               changes.experience = user.experience + 15;
               if (changes.experience > 100) {
-                changes.experience - 100;
+                changes.experience = user.experience + 15 - 100;
                 changes.level = user.level + 1;
               }
               return (
