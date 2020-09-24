@@ -10,12 +10,13 @@ const { generateToken } = require("./jwtoken");
 const users = require("../users/usersRoute");
 const plants = require("../plants/plantsRoute");
 const mw = require("../users/usersMiddleware");
+const restricted = require("./restrictedMiddleware")
 
 const server = express();
 
 server.use(cors(), express.json(), helmet(), morgan("dev"));
-server.use("/users", users);
-server.use("/plants", plants);
+server.use("/users", restricted, users);
+server.use("/plants", restricted, plants);
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "Up" });
