@@ -35,7 +35,7 @@ router.put("/:id/water", (req, res)=>{
   .then(ret =>{
     console.log(ret)
     if(ret){
-      res.status(200).json({message: "Watered", user: ret[0]}).end()
+      res.status(200).json({message: "Watered", user: ret}).end()
     }else{
       res.status(400).json({message: "Plant could not be watered"}).end()
     }

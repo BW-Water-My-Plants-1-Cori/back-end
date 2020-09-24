@@ -13,10 +13,10 @@ function findById(id) {
 
 function add(id, plant) {
   plant.user_id = id;
-  plant.date_created = moment().format("L");
-
-  //    plant.last_watered = moment(plant.last_watered, "DDMMYYYY").format('L')
-  // plant.next_watering = moment(plant.last_watered, DDMMYYYY).add(plant.increment, 'days').calendar()
+  plant.date_created = moment().format("L");plant.date_last_watered = moment().format("L")
+  var newDate = moment(plant.date_last_watered).format("L")
+  var updated = moment(newDate).add(plant.increment, "days")
+  plant.next_watering = updated
 
   return db("plants")
     .insert(plant)
@@ -111,7 +111,10 @@ function update(id, plant) {
 function water(id) {
   return findById(id)
     .then((plant) => {
-      plant.date_last_watered = moment().format("L");
+plant.date_last_watered = moment().format("L")
+var newDate = moment(plant.date_last_watered).format("L")
+var updated = moment(newDate).add(plant.increment, "days")
+plant.next_watering = updated
       return update(id, plant)
         .then((plant) => {
           const id = plant.user_id;
@@ -131,49 +134,49 @@ function water(id) {
                   .update(changes)
                   .then((changed) => {
                     return db("plants as p")
-                      .where({ user_id: id })
-                      .join("users as u", "u.id", "p.user_id")
-                      .select(
-                        "u.username",
-                        "u.email",
-                        "u.phonenumber",
-                        "u.first_name",
-                        "u.last_name",
-                        "u.experience",
-                        "u.level",
-                        "u.num_of_plants",
-                        "u.id",
-                        "p.plant_name",
-                        "p.date_last_watered",
-                        "p.increment",
-                        "p.next_watering",
-                        "p.date_created",
-                        "p.species",
-                        "p.description",
-                        "p.plant_url",
-                        "p.id as plant_id"
-                      )
-                      .then((plants) => {
-                        const resultMap = plants.reduce((result, row) => {
-                          result[row.user_id] = result[row.id] || {
-                            ...row,
-                            plants: [],
-                          };
-                          result[row.user_id].plants.push({
-                            id: row.id,
-                            plant_name: row.plant_name,
-                            date_last_watered: row.date_last_watered,
-                            next_watering: row.next_watering,
-                            date_created: row.date_created,
-                            increment: row.increment,
-                            species: row.species,
-                            desription: row.description,
-                            plant_url: row.plant_url,
-                          });
-                          return result;
-                        }, {});
-                        return Object.values(resultMap);
-                      });
+                    .where({ user_id: id })
+                    .join("users as u", "u.id", "p.user_id")
+                    .select(
+                      "u.username",
+                      "u.email",
+                      "u.phonenumber",
+                      "u.first_name",
+                      "u.last_name",
+                      "u.experience",
+                      "u.level",
+                      "u.num_of_plants",
+                      "u.id as id",
+                      "p.plant_name",
+                      "p.date_last_watered",
+                      "p.increment",
+                      "p.next_watering",
+                      "p.date_created",
+                      "p.species",
+                      "p.description",
+                      "p.plant_url",
+                      "p.id as plant_id"
+                    )
+                    .then((plants) => {
+                      const resultMap = plants.reduce((result, row) => {
+                        result[row.id] = result[row.id] || {
+                          ...row,
+                          plants: [],
+                        };
+                        result[row.id].plants.push({
+                          id: row.plant_id,
+                          plant_name: row.plant_name,
+                          date_last_watered: row.date_last_watered,
+                          next_watering: row.next_watering,
+                          date_created: row.date_created,
+                          increment: row.increment,
+                          species: row.species,
+                          desription: row.description,
+                          plant_url: row.plant_url,
+                        });
+                        return result;
+                      }, {});
+                      return Object.values(resultMap)[0];
+                    })
                   })
                   // .then((plant) => {
                   //   const newThings = plant;
@@ -218,6 +221,9 @@ function remove(id) {
           if (changes.experience < 0) {
             changes.experience + 100;
             changes.level = user.level - 1;
+            if(changes.level < 0){
+              changes.level = 0
+            }
           }
           return db("users").where({ id: user.id }).update(changes)
             .then((changed) => {
@@ -225,7 +231,6 @@ function remove(id) {
                 .where({ id: plant_id })
                 .del()
                 .then((changed) => {
-                  console.log(changed, "delete success", changes.id)
                   return db("plants as p")
                     .where({ user_id: changes.id })
                     .join("users as u", "u.id", "p.user_id")
