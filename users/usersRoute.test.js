@@ -29,10 +29,10 @@ describe("GET /user/:id", () => {
     await db("users").truncate();
   });
 
-  it("returns 404 if no user", async () => {
+  it("returns 401 if not logged in", async () => {
     const newUsers = await supertest(server).get("/users/50000");
 
-    expect(newUsers.status).toBe(404);
+    expect(newUsers.status).toBe(401);
   });
 
   it("returns 200 if user", async () => {
@@ -53,10 +53,10 @@ describe("PUT /users/:id", () => {
     await db("users").truncate();
   });
 
-  it("returns 404 if no user", async () => {
+  it("returns 401 if not logged in", async () => {
     const newUsers = await supertest(server).put("/users/5000000");
 
-    expect(newUsers.status).toBe(404);
+    expect(newUsers.status).toBe(401);
   });
 
   it("returns 200 if user", async () => {
@@ -99,20 +99,20 @@ describe("PUT /users/:id", () => {
       await db("users").truncate();
     });
   
-    it("returns 204 if user deleted", async () => {
+    it("returns 200 if user deleted", async () => {
       const user = await supertest(server)
         .post("/register")
         .send({ username: "sam", password: "pass", email: "email@email.com" });
   
       const newUsers = await supertest(server).delete(`/users/${user.body.id}`);
   
-      expect(newUsers.status).toBe(204);
+      expect(newUsers.status).toBe(200);
     });
   
-    it("returns 404 if no user", async () => {
+    it("returns 401 if not logged in", async () => {
       const newUsers = await supertest(server).delete("/users/777777777777");
   
-      expect(newUsers.status).toBe(404);
+      expect(newUsers.status).toBe(401);
     });
   });
 });

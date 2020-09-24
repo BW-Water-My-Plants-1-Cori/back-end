@@ -197,7 +197,7 @@ describe("add plant", () => {
         1
       );
 
-      expect(changes.username).toBe("Bob");
+      expect(changes.user.plants[0].plant_name).toBe("Bob");
     });
   });
 });
