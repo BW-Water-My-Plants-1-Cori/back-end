@@ -89,9 +89,9 @@ router.put("/:id", mw.verifyForm, (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  db.remove(user.id)
+  db.remove(req.params.id)
     .then((num) => {
-      if (num !== 0) {
+      if (num === 1) {
         res.status(204).json({ message: "You are gone!" }).end();
       } else {
         res.status(404).json({ message: "Something is strange" }).end();
