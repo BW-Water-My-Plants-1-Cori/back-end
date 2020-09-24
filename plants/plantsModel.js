@@ -13,9 +13,9 @@ function findById(id) {
 
 function add(id, plant) {
   plant.user_id = id;
-  plant.date_created = moment().format("L");plant.date_last_watered = moment().format("L")
+  plant.date_created = moment().format("L");
   var newDate = moment(plant.date_last_watered).format("L")
-  var updated = moment(newDate).add(plant.increment, "days")
+  var updated = moment(newDate).add(plant.increment, "days").format("L")
   plant.next_watering = updated
 
   return db("plants")
@@ -113,7 +113,7 @@ function water(id) {
     .then((plant) => {
 plant.date_last_watered = moment().format("L")
 var newDate = moment(plant.date_last_watered).format("L")
-var updated = moment(newDate).add(plant.increment, "days")
+var updated = moment(newDate).add(plant.increment, "days").format("L")
 plant.next_watering = updated
       return update(id, plant)
         .then((plant) => {
