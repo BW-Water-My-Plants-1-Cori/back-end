@@ -16,7 +16,7 @@ function add(id, plant) {
   plant.date_created = moment().format("L");
   var newDate = moment(plant.date_last_watered).format("L")
   var updated = moment(newDate).add(plant.increment, "days")
-  plant.next_watering = moment(updated).format("L")
+  plant.next_watering = updated
 
   return db("plants")
     .insert(plant)
@@ -114,7 +114,7 @@ function water(id) {
 plant.date_last_watered = moment().format("L")
 var newDate = moment(plant.date_last_watered).format("L")
 var updated = moment(newDate).add(plant.increment, "days")
-plant.next_watering = moment(updated).format("L")
+plant.next_watering = updated
       return update(id, plant)
         .then((plant) => {
           const id = plant.user_id;
