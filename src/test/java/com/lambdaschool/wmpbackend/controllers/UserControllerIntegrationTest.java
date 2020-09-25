@@ -77,7 +77,7 @@ public class UserControllerIntegrationTest
         this.mockMvc.perform(get("/users/users"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("cinnamon")));
+                .andExpect(content().string(containsString("admin")));
     }
 
     @WithUserDetails("admin")
@@ -96,10 +96,10 @@ public class UserControllerIntegrationTest
     public void getUserLikeName() throws
             Exception
     {
-        this.mockMvc.perform(get("/users/user/name/like/{userName}", "kitty"))
+        this.mockMvc.perform(get("/users/user/name/like/{userName}", "ad"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("misskitty")));
+                .andExpect(content().string(containsString("admin")));
     }
 
     @WithUserDetails("admin")
@@ -108,7 +108,7 @@ public class UserControllerIntegrationTest
             Exception
     {
         this.mockMvc.perform(get("/users/user/{userid}",
-                                 4))
+                                 8))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("admin")));
@@ -171,7 +171,7 @@ public class UserControllerIntegrationTest
             Exception
     {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/user/{id}",
-                                                      13))
+                                                      9))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }
@@ -193,7 +193,7 @@ public class UserControllerIntegrationTest
             Exception
     {
         mockMvc.perform(MockMvcRequestBuilders.patch("/users/user/{userid}",
-                                                   7)
+                                                   8)
                                 .content("{\"password\": \"EATEATEAT\"}")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))

@@ -84,12 +84,12 @@ public class PlantServiceImplTest
     public void d_delete()
     {
         plantService.delete(4);
-        assertEquals(0, plantService.findAll().size());
+        assertEquals(3, plantService.findAll().size());
     }
     
     @Test
     public void a_findAll()
     {
-        assertEquals(1,plantService.findAll().size());
+        assertEquals(4,plantService.findAll().size());
     }
 }

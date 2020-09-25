@@ -22,7 +22,7 @@ public class UserPlants extends Auditable implements Serializable
     @Id
     @ManyToOne
     @JoinColumn(name = "plantid")
-    @JsonIgnoreProperties(value = "users", allowSetters = true)
+    @JsonIgnoreProperties(value = "userPlants", allowSetters = true)
     private Plant plants;
     
     public UserPlants()

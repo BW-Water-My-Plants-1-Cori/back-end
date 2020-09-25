@@ -163,10 +163,10 @@ public class UserControllerUnitTest
     public void getUserById() throws
             Exception
     {
-        String apiUrl = "/users/user/12";
+        String apiUrl = "/users/user/8";
 
-        Mockito.when(userService.findUserById(12))
-                .thenReturn(userList.get(1));
+        Mockito.when(userService.findUserById(8))
+                .thenReturn(userList.get(0));
 
         RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl)
                 .accept(MediaType.APPLICATION_JSON);
